@@ -21,6 +21,7 @@
 /build
 
 # misc
+tmp/
 .DS_Store
 *.pem
 
@@ -39,3 +40,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Personal / machine-specific
+CLAUDE.local.md
+.claude/settings.local.json
+
+# Editor
+.vscode/
+.idea/
+
+# AWS
+.aws-sam/
