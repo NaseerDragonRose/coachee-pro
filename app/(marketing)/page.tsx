@@ -10,7 +10,9 @@ export default function Home() {
         Take a free, structured assessment built for Class 11 &amp; 12
         students—see which tech career actually fits you.
       </p>
-      <Button size="lg">Start Free Assessment</Button>
+      <Button size="lg" className="h-12 px-8 text-base">
+        Start Free Assessment
+      </Button>
     </main>
   );
 }
