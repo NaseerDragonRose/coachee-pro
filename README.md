@@ -8,7 +8,7 @@ Students who are unsure which technology career fits them take a structured asse
 
 ## Status
 
-Documentation phase complete. Application not yet built — Phase 1 (marketing website) is the next milestone.
+Phase 1 scaffold complete — Next.js + Tailwind + shadcn/ui initialized with a working home page. Building out the remaining Phase 1 pages (About, Career Blueprint, Technology Careers, Blog, Contact, Book Consultation, FAQ, Privacy, Terms) is the next milestone.
 
 ## Documentation
 
