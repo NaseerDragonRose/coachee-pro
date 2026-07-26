@@ -95,7 +95,7 @@ Final copywriting for About/Technology Careers/FAQ and legal review of Privacy/T
 
 ## Component conventions
 
-New hand-written components in this batch (`Header`, `Footer`, `Section`) follow the convention documented in `.claude/rules/component-conventions.md`: named `const` arrow-function export, props destructured inline, prop type named `Props` declared after the component. Does not apply to `components/ui/*` (shadcn-generated) or to `page.tsx`/`layout.tsx` files (Next.js requires default exports there).
+New hand-written components in this batch (`Header`, `Footer`, `Section`) follow the convention documented in `.claude/rules/component-conventions.md`: named `const` arrow-function export, props destructured inline, prop type named `Props` declared after the component. Does not apply to `components/ui/*` (shadcn-style output — see the rule file for the distinction between CLI-generated and hand-written files there) or to `page.tsx`/`layout.tsx` files (Next.js requires default exports there).
 
 ## Metadata
 
