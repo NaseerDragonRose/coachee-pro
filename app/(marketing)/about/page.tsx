@@ -11,6 +11,9 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main className="flex flex-1 flex-col">
+      <h1 className="mx-auto w-full max-w-3xl px-6 pt-16 text-3xl font-semibold tracking-tight sm:px-16 sm:text-4xl">
+        About CoacheePro
+      </h1>
       <Section title="Our Mission">
         <p className="text-pretty text-muted-foreground">
           [TODO] Lorem ipsum dolor sit amet, consectetur adipiscing elit,

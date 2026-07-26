@@ -36,7 +36,7 @@ components/
 │   ├── footer.tsx
 │   └── section.tsx           # shared section wrapper (heading + spacing)
 └── ui/
-    └── accordion.tsx          # shadcn accordion, added via shadcn CLI for FAQ
+    └── accordion.tsx          # hand-written Accordion wrapping @base-ui/react/accordion, shadcn-style
 ```
 
 URLs: `/about`, `/technology-careers`, `/faq`, `/privacy`, `/terms`.
@@ -65,7 +65,7 @@ All pages use the shared `Section` wrapper and get `[TODO]`-prefixed placeholder
 
 **Technology Careers** (`/technology-careers`) — intro blurb + a responsive grid of 10 cards, one per candidate career from `PRODUCT.md` (Software Engineer, AI Engineer, Cybersecurity Analyst, Cloud Engineer, Data Scientist, UI/UX Designer, Product Manager, DevOps Engineer, Robotics Engineer, Game Developer), each with a `[TODO]` one-line description. Single page, no per-career detail routes.
 
-**FAQ** (`/faq`) — 4 category sections (Product, Pricing, Assessment & Blueprint, Trust & Safety), each rendering a shadcn `Accordion` with 2-3 `[TODO]` Q&A items.
+**FAQ** (`/faq`) — 4 category sections (Product, Pricing, Assessment & Blueprint, Trust & Safety), each rendering a hand-written `Accordion` component with 2-3 `[TODO]` Q&A items.
 
 **Privacy** (`/privacy`) — generic startup privacy-policy boilerplate (data collected, cookies, third parties referenced generically — Razorpay, OpenAI — contact for data requests). Visible note at the top: needs legal review before launch.
 

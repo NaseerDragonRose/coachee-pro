@@ -10,6 +10,9 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <main className="flex flex-1 flex-col">
+      <h1 className="mx-auto w-full max-w-3xl px-6 pt-16 text-3xl font-semibold tracking-tight sm:px-16 sm:text-4xl">
+        Terms of Service
+      </h1>
       <Section title="Terms of Service">
         <p className="rounded-md border border-dashed border-border bg-muted px-4 py-3 text-sm text-muted-foreground">
           This is a generic placeholder set of terms and has not been
@@ -59,8 +62,11 @@ export default function TermsPage() {
       </Section>
       <Section title="Contact Us">
         <p className="text-pretty text-muted-foreground">
-          If you have questions about these Terms, please contact us at
-          legal@coacheepro.com.
+          If you have questions about these Terms, please contact us at{" "}
+          <a href="mailto:legal@coacheepro.com" className="underline">
+            legal@coacheepro.com
+          </a>
+          .
         </p>
       </Section>
     </main>

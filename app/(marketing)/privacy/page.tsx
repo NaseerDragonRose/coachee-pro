@@ -10,6 +10,9 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <main className="flex flex-1 flex-col">
+      <h1 className="mx-auto w-full max-w-3xl px-6 pt-16 text-3xl font-semibold tracking-tight sm:px-16 sm:text-4xl">
+        Privacy Policy
+      </h1>
       <Section title="Privacy Policy">
         <p className="rounded-md border border-dashed border-border bg-muted px-4 py-3 text-sm text-muted-foreground">
           This is a generic placeholder policy and has not been reviewed
@@ -59,7 +62,11 @@ export default function PrivacyPage() {
       <Section title="Contact Us">
         <p className="text-pretty text-muted-foreground">
           If you have questions about this Privacy Policy, please contact
-          us at privacy@coacheepro.com.
+          us at{" "}
+          <a href="mailto:privacy@coacheepro.com" className="underline">
+            privacy@coacheepro.com
+          </a>
+          .
         </p>
       </Section>
     </main>

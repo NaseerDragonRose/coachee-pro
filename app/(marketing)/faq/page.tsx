@@ -79,6 +79,9 @@ const FAQ_CATEGORIES = [
 export default function FaqPage() {
   return (
     <main className="flex flex-1 flex-col">
+      <h1 className="mx-auto w-full max-w-3xl px-6 pt-16 text-3xl font-semibold tracking-tight sm:px-16 sm:text-4xl">
+        Frequently Asked Questions
+      </h1>
       {FAQ_CATEGORIES.map(({ category, items }) => (
         <Section key={category} title={category}>
           <Accordion>

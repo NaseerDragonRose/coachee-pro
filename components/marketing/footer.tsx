@@ -2,6 +2,7 @@ import Link from "next/link"
 
 const COMPANY_LINKS = [
   { href: "/about", label: "About" },
+  { href: "/technology-careers", label: "Technology Careers" },
   { href: "/faq", label: "FAQ" },
 ]
 
@@ -25,33 +26,37 @@ export const Footer = () => {
         </div>
         <div>
           <p className="text-sm font-semibold">Company</p>
-          <ul className="mt-3 space-y-2">
-            {COMPANY_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <nav aria-label="Company">
+            <ul className="mt-3 space-y-2">
+              {COMPANY_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
         <div>
           <p className="text-sm font-semibold">Legal</p>
-          <ul className="mt-3 space-y-2">
-            {LEGAL_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <nav aria-label="Legal">
+            <ul className="mt-3 space-y-2">
+              {LEGAL_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
       <div className="border-t border-border px-6 py-6 text-center text-xs text-muted-foreground sm:px-16">

@@ -27,7 +27,7 @@ export const Header = () => {
             </Link>
           ))}
         </nav>
-        <Button size="sm" className="shrink-0" render={<Link href="/" />}>
+        <Button size="sm" nativeButton={false} className="shrink-0" render={<Link href="/" />}>
           Start Free Assessment
         </Button>
       </div>
