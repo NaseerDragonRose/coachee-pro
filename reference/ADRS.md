@@ -34,7 +34,7 @@ Format per decision: requirements, options with pros/cons/cost/exit-strategy, an
 
 ## ADR-002 — Infrastructure as Code
 
-**Status:** Pending — decide before first AWS resources are provisioned (Phase 1)
+**Status:** Decided (2026-07-27) — AWS CDK
 
 **Requirements:** Reproducible AWS provisioning (Amplify app, RDS/Cognito/S3 when added), maintainable by a solo developer initially.
 
@@ -48,13 +48,13 @@ Format per decision: requirements, options with pros/cons/cost/exit-strategy, an
 - **Cons:** Separate HCL language to learn/maintain alongside the TypeScript app; AWS provider sometimes lags new AWS features.
 - **Cost:** Free (tooling); pay only for provisioned AWS resources.
 
-**Decision:** TBD before Phase 1 infra is provisioned. Leaning CDK given the AWS-only, TypeScript-first stack, but not locked.
+**Decision:** AWS CDK. Confirmed at Phase 1 kickoff given the AWS-only, TypeScript-first stack.
 
 ---
 
 ## ADR-003 — Transactional / marketing email
 
-**Status:** Pending — decide at Phase 1 (lead capture, confirmations) or Phase 2 (auth emails), whichever comes first
+**Status:** Decided (2026-07-27) — AWS SES
 
 **Requirements:** Transactional email (signup confirmation, booking confirmation), reasonably deliverable, low cost at MVP volume.
 
@@ -68,7 +68,7 @@ Format per decision: requirements, options with pros/cons/cost/exit-strategy, an
 - **Cons:** Third-party SaaS (not AWS); cost per email is higher than SES once volume grows.
 - **Cost:** Free tier likely sufficient through Phase 1–2; becomes a recurring SaaS line item at scale.
 
-**Decision:** TBD when email sending is actually needed. Given price sensitivity at MVP scale, either is viable — SES if AWS-native is prioritized immediately, Resend if faster setup matters more in Phase 1.
+**Decision:** AWS SES. Confirmed at Phase 1, prioritizing AWS-native fit and lowest cost at volume over Resend's faster initial setup.
 
 ---
 

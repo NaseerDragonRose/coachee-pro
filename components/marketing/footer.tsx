@@ -4,6 +4,7 @@ const COMPANY_LINKS = [
   { href: "/about", label: "About" },
   { href: "/technology-careers", label: "Technology Careers" },
   { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
 ]
 
 const LEGAL_LINKS = [

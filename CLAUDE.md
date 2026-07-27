@@ -50,9 +50,9 @@ Documentation phase complete. No application code yet. Next build target is Phas
 | File storage | Amazon S3 | Confirmed |
 | Payments | Razorpay | Confirmed |
 | AI | OpenAI, wrapped behind an internal AI service interface | Confirmed (provider swappable) |
-| Email | AWS SES vs Resend | Pending — ADR-003 |
+| Email | AWS SES | Confirmed — ADR-003 |
 | Analytics | Google Analytics + PostHog | Pending — ADR-004 |
 | Monitoring | CloudWatch | Confirmed |
-| IaC | AWS CDK vs Terraform | Pending — ADR-002 |
+| IaC | AWS CDK | Confirmed — ADR-002 |
 
 Full detail and rationale: `/reference/ARCHITECTURE.md`.
