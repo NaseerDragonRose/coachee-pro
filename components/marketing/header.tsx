@@ -11,19 +11,20 @@ const NAV_LINKS = [
 
 export const Header = () => {
   return (
-    <header className="w-full border-b border-border">
+    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-4 sm:px-16">
         <Link href="/" className="text-lg font-semibold tracking-tight">
           CoacheePro
         </Link>
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="group relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
         </nav>

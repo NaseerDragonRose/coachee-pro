@@ -15,11 +15,11 @@ export const Footer = () => {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="w-full border-t border-border">
-      <div className="mx-auto grid w-full max-w-6xl gap-8 px-6 py-12 sm:grid-cols-3 sm:px-16">
+    <footer className="w-full border-t border-border bg-muted/40">
+      <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-16 sm:grid-cols-3 sm:px-16">
         <div>
           <p className="text-lg font-semibold tracking-tight">CoacheePro</p>
-          <p className="mt-2 max-w-xs text-sm text-muted-foreground">
+          <p className="mt-3 max-w-xs text-pretty text-sm text-muted-foreground">
             Helping Class 11 &amp; 12 students discover the technology
             career that actually fits them.
           </p>
@@ -27,7 +27,7 @@ export const Footer = () => {
         <div>
           <p className="text-sm font-semibold">Company</p>
           <nav aria-label="Company">
-            <ul className="mt-3 space-y-2">
+            <ul className="mt-4 space-y-3">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -44,7 +44,7 @@ export const Footer = () => {
         <div>
           <p className="text-sm font-semibold">Legal</p>
           <nav aria-label="Legal">
-            <ul className="mt-3 space-y-2">
+            <ul className="mt-4 space-y-3">
               {LEGAL_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
