@@ -533,6 +533,7 @@ Expected: no errors. Note that About/FAQ/Technology Careers still reference the 
 
 **Files:**
 - Create: `lib/careers.ts`
+- Create: `components/marketing/career-card.tsx`
 - Create: `components/marketing/hero.tsx`
 - Create: `components/marketing/how-it-works.tsx`
 - Create: `components/marketing/career-preview-grid.tsx`
@@ -546,6 +547,7 @@ Expected: no errors. Note that About/FAQ/Technology Careers still reference the 
 - Consumes: `Reveal`, `GradientBlob` (Task 2), `Section` (Task 4), `Button` (existing, unchanged).
 - Produces:
   - `lib/careers.ts` exports `type Career = { title: string; description: string; icon: LucideIcon }` and `CAREERS: Career[]` (10 items, in the same order as today). Consumed by Task 7's Technology Careers page rewrite.
+  - `CareerCard({ title: string; description: string; icon: LucideIcon })` — the single career-card rendering used by both `CareerPreviewGrid` here and the full Technology Careers page in Task 7. Its prop shape matches `Career` exactly, so callers can spread a `Career` object directly (`<CareerCard {...career} />`).
   - `Hero()`, `HowItWorks()`, `CareerPreviewGrid()`, `BlueprintFeatures()`, `TrustStrip()`, `FinalCta()` — zero-prop components, consumed by Task 6's Home page composition.
 
 - [ ] **Step 1: Create `lib/careers.ts`**
@@ -635,7 +637,33 @@ export const CAREERS: Career[] = [
 ]
 ```
 
-- [ ] **Step 2: Create `components/marketing/hero.tsx`**
+- [ ] **Step 2: Create `components/marketing/career-card.tsx`**
+
+```tsx
+import type { LucideIcon } from "lucide-react"
+
+export const CareerCard = ({ title, description, icon: Icon }: Props) => {
+  return (
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+      <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        <Icon aria-hidden className="size-5" />
+      </div>
+      <p className="mt-4 font-semibold">{title}</p>
+      <p className="mt-2 text-pretty text-sm text-muted-foreground">
+        {description}
+      </p>
+    </div>
+  )
+}
+
+type Props = {
+  title: string
+  description: string
+  icon: LucideIcon
+}
+```
+
+- [ ] **Step 3: Create `components/marketing/hero.tsx`**
 
 ```tsx
 import Link from "next/link"
@@ -683,7 +711,7 @@ export const Hero = () => {
 }
 ```
 
-- [ ] **Step 3: Create `components/marketing/how-it-works.tsx`**
+- [ ] **Step 4: Create `components/marketing/how-it-works.tsx`**
 
 ```tsx
 import { ClipboardCheck, Compass, FileText, Users } from "lucide-react"
@@ -751,12 +779,13 @@ export const HowItWorks = () => {
 }
 ```
 
-- [ ] **Step 4: Create `components/marketing/career-preview-grid.tsx`**
+- [ ] **Step 5: Create `components/marketing/career-preview-grid.tsx`**
 
 ```tsx
 import Link from "next/link"
 
 import { CAREERS } from "@/lib/careers"
+import { CareerCard } from "@/components/marketing/career-card"
 import { Reveal } from "@/components/marketing/reveal"
 import { Section } from "@/components/marketing/section"
 import { Button } from "@/components/ui/button"
@@ -772,17 +801,9 @@ export const CareerPreviewGrid = () => {
       className="max-w-5xl"
     >
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {PREVIEW_CAREERS.map(({ title, description, icon: Icon }, index) => (
-          <Reveal key={title} delay={index * 75}>
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
-              <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Icon aria-hidden className="size-5" />
-              </div>
-              <p className="mt-4 font-semibold">{title}</p>
-              <p className="mt-2 text-pretty text-sm text-muted-foreground">
-                {description}
-              </p>
-            </div>
+        {PREVIEW_CAREERS.map((career, index) => (
+          <Reveal key={career.title} delay={index * 75}>
+            <CareerCard {...career} />
           </Reveal>
         ))}
       </div>
@@ -800,7 +821,7 @@ export const CareerPreviewGrid = () => {
 }
 ```
 
-- [ ] **Step 5: Create `components/marketing/blueprint-features.tsx`**
+- [ ] **Step 6: Create `components/marketing/blueprint-features.tsx`**
 
 ```tsx
 import { Reveal } from "@/components/marketing/reveal"
@@ -871,7 +892,7 @@ export const BlueprintFeatures = () => {
 }
 ```
 
-- [ ] **Step 6: Create `components/marketing/trust-strip.tsx`**
+- [ ] **Step 7: Create `components/marketing/trust-strip.tsx`**
 
 ```tsx
 import Link from "next/link"
@@ -900,7 +921,7 @@ export const TrustStrip = () => {
 }
 ```
 
-- [ ] **Step 7: Create `components/marketing/final-cta.tsx`**
+- [ ] **Step 8: Create `components/marketing/final-cta.tsx`**
 
 ```tsx
 import Link from "next/link"
@@ -934,7 +955,7 @@ export const FinalCta = () => {
 }
 ```
 
-- [ ] **Step 8: Typecheck**
+- [ ] **Step 9: Typecheck**
 
 Run: `npx tsc --noEmit`
 Expected: no errors. Confirm `lucide-react` exports used (`BarChart3`, `Boxes`, `Brush`, `Cloud`, `Cpu`, `Gamepad2`, `Lightbulb`, `Server`, `ShieldCheck`, `Sparkles`, `ClipboardCheck`, `Compass`, `FileText`, `Users`) resolve — a typo here shows up as a TS2305 "has no exported member" error.
@@ -1000,7 +1021,7 @@ Expected: both succeed with no errors.
 - Modify: `app/(marketing)/faq/page.tsx`
 
 **Interfaces:**
-- Consumes: `PageHeader` (Task 4), `Reveal` (Task 2), `Section` (Task 4), `CAREERS` (Task 5).
+- Consumes: `PageHeader` (Task 4), `Reveal` (Task 2), `Section` (Task 4), `CAREERS` and `CareerCard` (Task 5).
 
 - [ ] **Step 1: Replace `app/(marketing)/about/page.tsx`**
 
@@ -1073,6 +1094,7 @@ import type { Metadata } from "next"
 
 import { CAREERS } from "@/lib/careers"
 import { PageHeader } from "@/components/marketing/page-header"
+import { CareerCard } from "@/components/marketing/career-card"
 import { Reveal } from "@/components/marketing/reveal"
 import { Section } from "@/components/marketing/section"
 
@@ -1095,17 +1117,9 @@ export default function TechnologyCareersPage() {
           your interests, strengths, and working style.
         </p>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {CAREERS.map(({ title, description, icon: Icon }, index) => (
-            <Reveal key={title} delay={(index % 3) * 75}>
-              <div className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
-                <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Icon aria-hidden className="size-5" />
-                </div>
-                <p className="mt-4 font-semibold">{title}</p>
-                <p className="mt-2 text-pretty text-sm text-muted-foreground">
-                  {description}
-                </p>
-              </div>
+          {CAREERS.map((career, index) => (
+            <Reveal key={career.title} delay={(index % 3) * 75}>
+              <CareerCard {...career} />
             </Reveal>
           ))}
         </div>
