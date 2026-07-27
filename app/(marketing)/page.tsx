@@ -1,18 +1,31 @@
-import { Button } from "@/components/ui/button";
+import { BlueprintFeatures } from "@/components/marketing/blueprint-features"
+import { CareerPreviewGrid } from "@/components/marketing/career-preview-grid"
+import { FinalCta } from "@/components/marketing/final-cta"
+import { Hero } from "@/components/marketing/hero"
+import { HowItWorks } from "@/components/marketing/how-it-works"
+import { Reveal } from "@/components/marketing/reveal"
+import { Section } from "@/components/marketing/section"
+import { TrustStrip } from "@/components/marketing/trust-strip"
 
 export default function Home() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-6 px-6 py-24 text-center sm:px-16">
-      <h1 className="max-w-2xl text-balance text-4xl font-semibold tracking-tight sm:text-5xl">
-        Discover the Best Technology Career for You
-      </h1>
-      <p className="max-w-xl text-pretty text-lg text-muted-foreground">
-        Take a free, structured assessment built for Class 11 &amp; 12
-        students—see which tech career actually fits you.
-      </p>
-      <Button size="lg" className="h-12 px-8 text-base">
-        Start Free Assessment
-      </Button>
+    <main className="flex flex-1 flex-col">
+      <Hero />
+      <Reveal>
+        <Section spacing="tight" className="text-center">
+          <p className="text-pretty text-lg text-muted-foreground">
+            Fragmented advice from YouTube, relatives, and influencers leaves
+            students guessing — and parents wanting confidence their child
+            isn&rsquo;t about to waste years on the wrong path. CoacheePro
+            replaces the guesswork with a clear, structured answer.
+          </p>
+        </Section>
+      </Reveal>
+      <HowItWorks />
+      <CareerPreviewGrid />
+      <BlueprintFeatures />
+      <TrustStrip />
+      <FinalCta />
     </main>
-  );
+  )
 }
