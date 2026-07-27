@@ -18,7 +18,7 @@ export const CareerPreviewGrid = () => {
     >
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {PREVIEW_CAREERS.map((career, index) => (
-          <Reveal key={career.title} delay={index * 75}>
+          <Reveal key={career.title} delay={index * 75} className="h-full">
             <CareerCard {...career} />
           </Reveal>
         ))}

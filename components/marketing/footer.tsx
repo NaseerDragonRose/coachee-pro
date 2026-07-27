@@ -32,9 +32,10 @@ export const Footer = () => {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="group relative text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {link.label}
+                    <span className="absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all duration-300 group-hover:w-full group-focus-visible:w-full" />
                   </Link>
                 </li>
               ))}
@@ -49,9 +50,10 @@ export const Footer = () => {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="group relative text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {link.label}
+                    <span className="absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all duration-300 group-hover:w-full group-focus-visible:w-full" />
                   </Link>
                 </li>
               ))}

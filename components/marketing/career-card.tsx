@@ -2,7 +2,7 @@ import type { LucideIcon } from "lucide-react"
 
 export const CareerCard = ({ title, description, icon: Icon }: Props) => {
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+    <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
       <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
         <Icon aria-hidden className="size-5" />
       </div>

@@ -24,11 +24,16 @@ export const Header = () => {
               className="group relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all duration-300 group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all duration-300 group-hover:w-full group-focus-visible:w-full" />
             </Link>
           ))}
         </nav>
-        <Button size="sm" nativeButton={false} className="shrink-0" render={<Link href="/" />}>
+        <Button
+          size="sm"
+          nativeButton={false}
+          className="shrink-0 transition-transform hover:scale-[1.02]"
+          render={<Link href="/" />}
+        >
           Start Free Assessment
         </Button>
       </div>

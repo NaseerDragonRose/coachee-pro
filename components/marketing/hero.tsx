@@ -18,7 +18,7 @@ export const Hero = () => {
         <div className="animate-in fade-in slide-in-from-bottom-4 flex flex-col items-center gap-3 delay-300 duration-700 sm:flex-row">
           <Button
             size="lg"
-            className="h-12 px-8 text-base"
+            className="h-12 px-8 text-base transition-transform hover:scale-[1.02]"
             nativeButton={false}
             render={<Link href="/" />}
           >
@@ -27,7 +27,7 @@ export const Hero = () => {
           <Button
             size="lg"
             variant="outline"
-            className="h-12 px-8 text-base"
+            className="h-12 px-8 text-base transition-transform hover:scale-[1.02]"
             nativeButton={false}
             render={<Link href="/technology-careers" />}
           >

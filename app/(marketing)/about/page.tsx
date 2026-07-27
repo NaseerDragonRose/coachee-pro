@@ -27,7 +27,7 @@ export default function AboutPage() {
         </Section>
       </Reveal>
       <Reveal>
-        <Section title="Why We Exist">
+        <Section title="Why We Exist" className="border-t border-border">
           <p className="text-pretty text-muted-foreground">
             A student interested in technology today is buried in advice —
             YouTube videos, relatives, teachers, influencers — and most of
@@ -42,7 +42,7 @@ export default function AboutPage() {
         </Section>
       </Reveal>
       <Reveal>
-        <Section title="Why We're Different">
+        <Section title="Why We're Different" className="border-t border-border">
           <p className="text-pretty text-muted-foreground">
             We&rsquo;re not a counselling service and we&rsquo;re not a
             generic AI chatbot. Our assessment is built specifically around

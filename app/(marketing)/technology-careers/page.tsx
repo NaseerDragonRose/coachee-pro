@@ -17,7 +17,7 @@ export default function TechnologyCareersPage() {
     <main className="flex flex-1 flex-col">
       <PageHeader
         title="Technology Careers"
-        subtitle={"\"Technology\" isn't one career — it's dozens of very different day-to-day jobs."}
+        subtitle={"“Technology” isn’t one career — it’s dozens of very different day-to-day jobs."}
       />
       <Section spacing="tight" className="max-w-5xl">
         <p className="text-pretty text-muted-foreground">
@@ -26,7 +26,7 @@ export default function TechnologyCareersPage() {
         </p>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {CAREERS.map((career, index) => (
-            <Reveal key={career.title} delay={(index % 3) * 75}>
+            <Reveal key={career.title} delay={(index % 3) * 75} className="h-full">
               <CareerCard {...career} />
             </Reveal>
           ))}
