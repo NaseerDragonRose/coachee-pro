@@ -29,9 +29,10 @@ export default function AboutPage() {
       <Reveal>
         <Section title="Why We Exist" className="border-t border-border">
           <p className="text-pretty text-muted-foreground">
-            A student interested in technology today is buried in advice —
-            YouTube videos, relatives, teachers, influencers — and most of
-            it is fragmented or contradictory. Which stream should I pick?
+            If you&rsquo;re interested in technology, you&rsquo;re buried in
+            advice right now — YouTube videos, relatives, teachers,
+            influencers — and most of it is fragmented or contradictory.
+            Which stream should I pick?
             Will AI replace this job by the time I graduate? What will I
             actually earn? What if I choose wrong? Parents feel this too:
             they&rsquo;re not looking for a vague &ldquo;roadmap,&rdquo; they
@@ -47,8 +48,8 @@ export default function AboutPage() {
             We&rsquo;re not a counselling service and we&rsquo;re not a
             generic AI chatbot. Our assessment is built specifically around
             technology careers — not a one-size-fits-all personality quiz —
-            and every Tech Career Blueprint it produces is reviewed by a
-            real mentor before it reaches you, so you get a second opinion
+            and a real mentor reviews every Tech Career Blueprint it
+            produces before it reaches you, so you get a second opinion
             from someone who&rsquo;s worked in the field, not just an
             algorithm&rsquo;s best guess.
           </p>

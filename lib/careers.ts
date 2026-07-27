@@ -28,7 +28,7 @@ export const CAREERS: Career[] = [
   {
     title: "AI Engineer",
     description:
-      "Builds and trains the machine learning models behind products like recommendation engines and chatbots. Suits students who like math, patterns, and working at the edge of what's possible.",
+      "Builds and trains the machine learning models behind products like recommendation engines and chatbots. A strong fit if you like math, spotting patterns, and working at the edge of what's possible.",
     icon: Sparkles,
   },
   {
@@ -40,25 +40,25 @@ export const CAREERS: Career[] = [
   {
     title: "Cloud Engineer",
     description:
-      "Builds and manages the infrastructure that keeps apps and websites running reliably at scale. Fits students who like systems thinking and making complex things run smoothly.",
+      "Builds and manages the infrastructure that keeps apps and websites running reliably at scale. A strong fit if you like systems thinking and making complex things run smoothly.",
     icon: Cloud,
   },
   {
     title: "Data Scientist",
     description:
-      "Turns raw data into insights that drive decisions, using statistics and code. A strong choice if you like numbers, asking why, and finding stories hidden in information.",
+      "Turns raw data into insights that drive decisions, using statistics and code. A strong choice if you like numbers, asking why, and uncovering the stories hidden in data.",
     icon: BarChart3,
   },
   {
     title: "UI/UX Designer",
     description:
-      "Shapes how digital products look, feel, and work for the people using them. Suits students who are creative, empathetic, and curious about how design decisions affect behavior.",
+      "Shapes how digital products look, feel, and work for the people using them. A strong fit if you're creative, empathetic, and curious about how design choices shape behavior.",
     icon: Brush,
   },
   {
     title: "Product Manager",
     description:
-      "Decides what gets built and why, working between users, designers, and engineers. Fits students who like leadership, communication, and connecting technology to real problems.",
+      "Decides what gets built and why, working between users, designers, and engineers. A strong fit if you like leading, communicating, and connecting technology to real-world problems.",
     icon: Lightbulb,
   },
   {
@@ -70,7 +70,7 @@ export const CAREERS: Career[] = [
   {
     title: "Robotics Engineer",
     description:
-      "Designs and programs machines that sense and act in the physical world, from drones to industrial arms. Suits students drawn to hardware, hands-on building, and mechanics as much as code.",
+      "Designs and programs machines that sense and act in the physical world, from drones to industrial arms. A strong fit if hardware, hands-on building, and mechanics excite you as much as code.",
     icon: Cpu,
   },
   {

@@ -37,7 +37,7 @@ const FAQ_CATEGORIES = [
       {
         question: "How much does the Tech Career Blueprint cost?",
         answer:
-          "The Blueprint is a one-time, affordable fee — pricing is shown before you pay, with no subscription or hidden charges.",
+          "The Blueprint is a one-time, affordable fee — you'll see the price before you pay, with no subscription or hidden charges.",
       },
       {
         question: "Is the assessment free?",
@@ -72,7 +72,7 @@ const FAQ_CATEGORIES = [
       {
         question: "Are the mentors verified?",
         answer:
-          "Our mentors are professionals brought on by the CoacheePro team to review and add context to your AI-generated Blueprint before it reaches you. As we grow, we'll share more detail on how mentors are selected.",
+          "The CoacheePro team brings on professionals to review and add context to your AI-generated Blueprint before it reaches you. As we grow, we'll share more detail on how we select mentors.",
       },
     ],
   },

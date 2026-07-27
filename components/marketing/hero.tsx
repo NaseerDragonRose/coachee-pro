@@ -11,7 +11,7 @@ export const Hero = () => {
         </h1>
         <p className="animate-in fade-in slide-in-from-bottom-4 max-w-xl text-pretty text-lg text-muted-foreground delay-150 duration-700">
           Take a free, structured assessment built for Class 11 &amp; 12
-          students—see which tech career actually fits you.
+          students — see which tech career actually fits you.
         </p>
         <div className="animate-in fade-in slide-in-from-bottom-4 flex flex-col items-center gap-3 delay-300 duration-700 sm:flex-row">
           <Button

@@ -14,10 +14,12 @@ export default function Home() {
       <Reveal>
         <Section spacing="tight" className="text-center">
           <p className="text-pretty text-lg text-muted-foreground">
-            Fragmented advice from YouTube, relatives, and influencers leaves
-            students guessing — and parents wanting confidence their child
-            isn&rsquo;t about to waste years on the wrong path. CoacheePro
-            replaces the guesswork with a clear, structured answer.
+            YouTube, relatives, teachers, influencers — everyone has an
+            opinion on your future, and most of them contradict each other.
+            Parents want more than reassurance; they want confidence their
+            child isn&rsquo;t about to waste years on the wrong path.
+            CoacheePro cuts through the noise with one clear, structured
+            answer.
           </p>
         </Section>
       </Reveal>
