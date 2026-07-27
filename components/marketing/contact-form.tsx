@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -13,7 +13,7 @@ const contactFormSchema = z.object({
     .string()
     .trim()
     .min(1, "Email is required")
-    .email("Enter a valid email address"),
+    .pipe(z.email("Enter a valid email address")),
   phone: z.string().trim().min(1, "Phone number is required"),
   message: z
     .string()
@@ -28,6 +28,7 @@ const inputClassName =
 
 export const ContactForm = () => {
   const [submitted, setSubmitted] = useState(false)
+  const confirmationRef = useRef<HTMLDivElement>(null)
   const {
     register,
     handleSubmit,
@@ -44,9 +45,20 @@ export const ContactForm = () => {
     setSubmitted(true)
   }
 
+  useEffect(() => {
+    if (submitted) {
+      confirmationRef.current?.focus()
+    }
+  }, [submitted])
+
   if (submitted) {
     return (
-      <div className="rounded-xl border border-border bg-muted/40 p-6 text-center">
+      <div
+        ref={confirmationRef}
+        tabIndex={-1}
+        role="status"
+        className="rounded-xl border border-border bg-muted/40 p-6 text-center"
+      >
         <p className="text-lg font-semibold">Message sent</p>
         <p className="mt-2 text-sm text-muted-foreground">
           Thanks — we&apos;ll get back to you within 1–2 business days.
@@ -64,12 +76,16 @@ export const ContactForm = () => {
         <input
           id="name"
           type="text"
+          autoComplete="name"
           className={inputClassName}
           aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? "name-error" : undefined}
           {...register("name")}
         />
         {errors.name ? (
-          <p className="text-sm text-destructive">{errors.name.message}</p>
+          <p id="name-error" role="alert" className="text-sm text-destructive">
+            {errors.name.message}
+          </p>
         ) : null}
       </div>
 
@@ -80,12 +96,16 @@ export const ContactForm = () => {
         <input
           id="email"
           type="email"
+          autoComplete="email"
           className={inputClassName}
           aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? "email-error" : undefined}
           {...register("email")}
         />
         {errors.email ? (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
+          <p id="email-error" role="alert" className="text-sm text-destructive">
+            {errors.email.message}
+          </p>
         ) : null}
       </div>
 
@@ -96,12 +116,16 @@ export const ContactForm = () => {
         <input
           id="phone"
           type="tel"
+          autoComplete="tel"
           className={inputClassName}
           aria-invalid={!!errors.phone}
+          aria-describedby={errors.phone ? "phone-error" : undefined}
           {...register("phone")}
         />
         {errors.phone ? (
-          <p className="text-sm text-destructive">{errors.phone.message}</p>
+          <p id="phone-error" role="alert" className="text-sm text-destructive">
+            {errors.phone.message}
+          </p>
         ) : null}
       </div>
 
@@ -114,10 +138,13 @@ export const ContactForm = () => {
           rows={5}
           className={inputClassName}
           aria-invalid={!!errors.message}
+          aria-describedby={errors.message ? "message-error" : undefined}
           {...register("message")}
         />
         {errors.message ? (
-          <p className="text-sm text-destructive">{errors.message.message}</p>
+          <p id="message-error" role="alert" className="text-sm text-destructive">
+            {errors.message.message}
+          </p>
         ) : null}
       </div>
 

@@ -17,12 +17,12 @@ export const Header = () => {
         <Link href="/" className="text-lg font-semibold tracking-tight">
           CoacheePro
         </Link>
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-5 md:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="group relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="group relative whitespace-nowrap text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
               <span className="absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all duration-300 group-hover:w-full group-focus-visible:w-full" />
