@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/accordion"
 
 export const metadata: Metadata = {
-  title: "FAQ — CoacheePro",
+  title: "FAQ | CoacheePro",
   description: "Answers to common questions about CoacheePro.",
 }
 
@@ -22,7 +22,7 @@ const FAQ_CATEGORIES = [
       {
         question: "What is CoacheePro?",
         answer:
-          "CoacheePro is a technology career planning platform for Class 11 and 12 students. You take a free assessment, get matched to the tech careers that fit you, and can unlock a full Tech Career Blueprint with a learning path, college guidance, and salary expectations.",
+          "CoacheePro is a technology career planning platform for students pursuing tech. You take a free assessment, get matched to the tech careers that fit you, and can unlock a full Tech Career Blueprint with a learning path, college guidance, and salary expectations.",
       },
       {
         question: "Who is CoacheePro for?",
@@ -37,7 +37,7 @@ const FAQ_CATEGORIES = [
       {
         question: "How much does the Tech Career Blueprint cost?",
         answer:
-          "The Blueprint is a one-time, affordable fee — you'll see the price before you pay, with no subscription or hidden charges.",
+          "The Blueprint is a one-time, affordable fee. You'll see the price before you pay, with no subscription or hidden charges.",
       },
       {
         question: "Is the assessment free?",
@@ -52,12 +52,12 @@ const FAQ_CATEGORIES = [
       {
         question: "How long does the assessment take?",
         answer:
-          "About 10–15 minutes. It covers your academics, interests, and working style — you can be honest and quick, there are no right or wrong answers.",
+          "About 10–15 minutes. It covers your academics, interests, and working style. Answer honestly and quickly: there are no right or wrong answers.",
       },
       {
         question: "What's included in the Blueprint?",
         answer:
-          "A career summary with plain-language reasoning for why it fits you, the skills you'll need, a month-by-month learning path for your first year, college guidance (degree vs. diploma, which type of program), indicative salary expectations, the career's future outlook including AI impact, and common mistakes to avoid — delivered as a dashboard and a downloadable PDF.",
+          "A career summary with plain-language reasoning for why it fits you, the skills you'll need, a month-by-month learning path for your first year, college guidance (degree vs. diploma, which type of program), indicative salary expectations, the career's future outlook including AI impact, and common mistakes to avoid. Delivered as a dashboard and a downloadable PDF.",
       },
     ],
   },

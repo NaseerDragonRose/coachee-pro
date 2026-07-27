@@ -14,7 +14,7 @@ export default function Home() {
       <Reveal>
         <Section spacing="tight" className="text-center">
           <p className="text-pretty text-lg text-muted-foreground">
-            YouTube, relatives, teachers, influencers — everyone has an
+            YouTube, relatives, teachers, influencers: everyone has an
             opinion on your future, and most of them contradict each other.
             Parents want more than reassurance; they want confidence their
             child isn&rsquo;t about to waste years on the wrong path.

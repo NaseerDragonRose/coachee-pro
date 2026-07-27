@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CoacheePro — Discover the Best Technology Career for You",
+  title: "CoacheePro | Discover the Best Technology Career for You",
   description:
-    "A free career assessment for Class 11 & 12 students exploring technology careers.",
+    "A free career assessment for students exploring technology careers.",
 };
 
 export default function RootLayout({

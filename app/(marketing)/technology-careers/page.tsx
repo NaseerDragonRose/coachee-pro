@@ -7,9 +7,9 @@ import { Reveal } from "@/components/marketing/reveal"
 import { Section } from "@/components/marketing/section"
 
 export const metadata: Metadata = {
-  title: "Technology Careers — CoacheePro",
+  title: "Technology Careers | CoacheePro",
   description:
-    "Explore the technology careers CoacheePro helps Class 11 & 12 students evaluate.",
+    "Explore the technology careers CoacheePro helps students pursuing tech evaluate.",
 }
 
 export default function TechnologyCareersPage() {
@@ -17,7 +17,7 @@ export default function TechnologyCareersPage() {
     <main className="flex flex-1 flex-col">
       <PageHeader
         title="Technology Careers"
-        subtitle={"“Technology” isn’t one career — it’s dozens of very different day-to-day jobs."}
+        subtitle={"“Technology” isn’t one career. It’s dozens of very different day-to-day jobs."}
       />
       <Section spacing="tight" className="max-w-5xl">
         <p className="text-pretty text-muted-foreground">

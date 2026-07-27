@@ -34,7 +34,7 @@ export const CAREERS: Career[] = [
   {
     title: "Cybersecurity Analyst",
     description:
-      "Protects systems and data from attacks by finding weaknesses before attackers do. A good match if you're detail-oriented and enjoy thinking like a puzzle-solver — or a detective.",
+      "Protects systems and data from attacks by finding weaknesses before attackers do. A good match if you're detail-oriented and enjoy thinking like a puzzle-solver, or a detective.",
     icon: ShieldCheck,
   },
   {

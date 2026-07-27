@@ -5,9 +5,9 @@ import { Reveal } from "@/components/marketing/reveal"
 import { Section } from "@/components/marketing/section"
 
 export const metadata: Metadata = {
-  title: "About — CoacheePro",
+  title: "About | CoacheePro",
   description:
-    "Why CoacheePro exists and how it helps Class 11 & 12 students find the right technology career.",
+    "Why CoacheePro exists and how it helps students pursuing tech find the right technology career.",
 }
 
 export default function AboutPage() {
@@ -17,8 +17,8 @@ export default function AboutPage() {
       <Reveal>
         <Section title="Our Mission">
           <p className="text-pretty text-muted-foreground">
-            CoacheePro helps Class 11 and 12 students figure out which
-            technology career actually fits them — before they commit four
+            CoacheePro helps students pursuing tech figure out which
+            technology career actually fits them, before they commit four
             or five years to a degree. We turn a confusing decision into a
             clear one: take a structured assessment, see which tech careers
             match your interests and strengths, and get a concrete plan for
@@ -30,8 +30,8 @@ export default function AboutPage() {
         <Section title="Why We Exist" className="border-t border-border">
           <p className="text-pretty text-muted-foreground">
             If you&rsquo;re interested in technology, you&rsquo;re buried in
-            advice right now — YouTube videos, relatives, teachers,
-            influencers — and most of it is fragmented or contradictory.
+            advice right now (YouTube videos, relatives, teachers,
+            influencers), and most of it is fragmented or contradictory.
             Which stream should I pick?
             Will AI replace this job by the time I graduate? What will I
             actually earn? What if I choose wrong? Parents feel this too:
@@ -47,7 +47,7 @@ export default function AboutPage() {
           <p className="text-pretty text-muted-foreground">
             We&rsquo;re not a counselling service and we&rsquo;re not a
             generic AI chatbot. Our assessment is built specifically around
-            technology careers — not a one-size-fits-all personality quiz —
+            technology careers (not a one-size-fits-all personality quiz),
             and a real mentor reviews every Tech Career Blueprint it
             produces before it reaches you, so you get a second opinion
             from someone who&rsquo;s worked in the field, not just an

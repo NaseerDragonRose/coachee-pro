@@ -20,8 +20,8 @@ export const Footer = () => {
         <div>
           <p className="text-lg font-semibold tracking-tight">CoacheePro</p>
           <p className="mt-3 max-w-xs text-pretty text-sm text-muted-foreground">
-            Helping Class 11 &amp; 12 students discover the technology
-            career that actually fits them.
+            Helping students pursuing tech discover the technology career
+            that actually fits them.
           </p>
         </div>
         <div>

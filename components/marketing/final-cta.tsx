@@ -11,7 +11,7 @@ export const FinalCta = () => {
           Stop guessing. Start with clarity.
         </h2>
         <p className="max-w-md text-pretty text-primary-foreground/90">
-          Take the free assessment today — it takes 10–15 minutes and
+          Take the free assessment today. It takes 10–15 minutes, and
           there&rsquo;s no card required.
         </p>
         <Button
