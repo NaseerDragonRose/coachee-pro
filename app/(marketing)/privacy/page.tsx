@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { Section } from "@/components/marketing/section"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — CoacheePro",
+  title: "Privacy Policy | CoacheePro",
   description: "How CoacheePro collects, uses, and protects your data.",
 }
 
