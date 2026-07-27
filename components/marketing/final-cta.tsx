@@ -17,7 +17,7 @@ export const FinalCta = () => {
         <Button
           size="lg"
           variant="secondary"
-          className="h-12 px-8 text-base transition-transform hover:scale-[1.02]"
+          className="h-12 px-8 text-base hover:scale-[1.02]"
           nativeButton={false}
           render={<Link href="/" />}
         >

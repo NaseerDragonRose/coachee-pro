@@ -31,7 +31,7 @@ export const Header = () => {
         <Button
           size="sm"
           nativeButton={false}
-          className="shrink-0 transition-transform hover:scale-[1.02]"
+          className="shrink-0 hover:scale-[1.02]"
           render={<Link href="/" />}
         >
           Start Free Assessment
