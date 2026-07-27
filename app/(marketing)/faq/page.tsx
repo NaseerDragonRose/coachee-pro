@@ -84,7 +84,7 @@ export default function FaqPage() {
       <PageHeader title="Frequently Asked Questions" />
       {FAQ_CATEGORIES.map(({ category, items }) => (
         <Reveal key={category}>
-          <Section title={category}>
+          <Section title={category} spacing="tight">
             <Accordion>
               {items.map(({ question, answer }) => (
                 <AccordionItem key={question}>

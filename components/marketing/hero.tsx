@@ -1,13 +1,11 @@
 import Link from "next/link"
 
-import { GradientBlob } from "@/components/marketing/gradient-blob"
 import { Button } from "@/components/ui/button"
 
 export const Hero = () => {
   return (
-    <section className="relative overflow-hidden">
-      <GradientBlob />
-      <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-6 py-28 text-center sm:px-16 sm:py-36">
+    <section>
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-6 py-28 text-center sm:px-16 sm:py-36">
         <h1 className="animate-in fade-in slide-in-from-bottom-4 text-balance text-5xl font-semibold tracking-tight duration-700 sm:text-6xl">
           Discover the Best Technology Career for You
         </h1>

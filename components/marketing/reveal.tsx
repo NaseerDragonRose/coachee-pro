@@ -29,11 +29,10 @@ export const Reveal = ({ children, className, delay = 0 }: Props) => {
   return (
     <div
       ref={ref}
-      style={delay ? { animationDelay: `${delay}ms` } : undefined}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
       className={cn(
-        "opacity-0",
-        isVisible &&
-          "animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out opacity-100",
+        "translate-y-4 opacity-0 transition-all duration-700 ease-out",
+        isVisible && "translate-y-0 opacity-100",
         className
       )}
     >
