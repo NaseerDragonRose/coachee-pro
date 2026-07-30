@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
+import Link from "next/link"
+import { HelpCircle, ArrowRight } from "lucide-react"
 
 import { PageHeader } from "@/components/marketing/page-header"
 import { Reveal } from "@/components/marketing/reveal"
 import { Section } from "@/components/marketing/section"
+import { Button } from "@/components/ui/button"
 import {
   Accordion,
   AccordionItem,
@@ -11,8 +14,9 @@ import {
 } from "@/components/ui/accordion"
 
 export const metadata: Metadata = {
-  title: "FAQ | CoacheePro",
-  description: "Answers to common questions about CoacheePro.",
+  title: "Frequently Asked Questions | CoacheePro",
+  description:
+    "Get answers to common questions about the CoacheePro career assessment, Tech Career Blueprint, pricing, and student data privacy.",
 }
 
 const FAQ_CATEGORIES = [
@@ -80,22 +84,58 @@ const FAQ_CATEGORIES = [
 
 export default function FaqPage() {
   return (
-    <main className="flex flex-1 flex-col">
-      <PageHeader title="Frequently Asked Questions" />
-      {FAQ_CATEGORIES.map(({ category, items }) => (
-        <Reveal key={category}>
-          <Section title={category} spacing="tight">
-            <Accordion>
-              {items.map(({ question, answer }) => (
-                <AccordionItem key={question}>
-                  <AccordionTrigger>{question}</AccordionTrigger>
-                  <AccordionContent>{answer}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </Section>
+    <main className="flex flex-1 flex-col pb-16">
+      <PageHeader
+        eyebrow="Help Center"
+        title="Frequently Asked Questions"
+        subtitle="Everything you need to know about the CoacheePro assessment, our Tech Career Blueprint, pricing, and data privacy."
+      />
+
+      <div className="mx-auto w-full max-w-4xl px-6 sm:px-8 space-y-12">
+        {FAQ_CATEGORIES.map(({ category, items }, index) => (
+          <Reveal key={category} delay={index * 100}>
+            <Section title={category} centered={false} spacing="tight" className="px-0">
+              <Accordion type="single" collapsible className="w-full">
+                {items.map(({ question, answer }) => (
+                  <AccordionItem key={question} value={question}>
+                    <AccordionTrigger className="text-left font-semibold text-slate-900 dark:text-slate-100">
+                      {question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
+                      {answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </Section>
+          </Reveal>
+        ))}
+
+        {/* Fallback Support CTA */}
+        <Reveal delay={400}>
+          <div className="rounded-2xl border border-indigo-100 bg-indigo-50/50 p-6 sm:p-8 text-center backdrop-blur-md dark:border-indigo-900/40 dark:bg-indigo-950/20">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-md shadow-indigo-500/20">
+              <HelpCircle className="h-6 w-6" />
+            </div>
+            <h3 className="mt-4 text-lg font-bold text-slate-900 dark:text-slate-100 sm:text-xl">
+              Still have questions?
+            </h3>
+            <p className="mt-2 text-xs text-muted-foreground sm:text-sm max-w-md mx-auto">
+              Can't find the answer you're looking for? Reach out to our team directly and we'll get right back to you.
+            </p>
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button
+                nativeButton={false}
+                className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-medium h-10 px-5 text-xs shadow-md transition-all hover:scale-[1.01]"
+                render={<Link href="/contact" />}
+              >
+                <span>Contact Support</span>
+                <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </div>
         </Reveal>
-      ))}
+      </div>
     </main>
   )
 }

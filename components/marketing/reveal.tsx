@@ -1,10 +1,25 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-
 import { cn } from "@/lib/utils"
 
-export const Reveal = ({ children, className, delay = 0 }: Props) => {
+type Direction = "up" | "down" | "left" | "right" | "none"
+
+type Props = {
+  children: React.ReactNode
+  className?: string
+  delay?: number
+  direction?: Direction
+  duration?: number
+}
+
+export const Reveal = ({
+  children,
+  className,
+  delay = 0,
+  direction = "up",
+  duration = 700,
+}: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
 
@@ -19,30 +34,39 @@ export const Reveal = ({ children, className, delay = 0 }: Props) => {
           observer.disconnect()
         }
       },
-      { threshold: 0.15 }
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -40px 0px", // Triggers 40px before element enters viewport for smoother scroll flow
+      }
     )
 
     observer.observe(node)
     return () => observer.disconnect()
   }, [])
 
+  const initialTransforms: Record<Direction, string> = {
+    up: "translate-y-6",
+    down: "-translate-y-6",
+    left: "translate-x-6",
+    right: "-translate-x-6",
+    none: "",
+  }
+
   return (
     <div
       ref={ref}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+      style={{
+        transitionDelay: delay ? `${delay}ms` : undefined,
+        transitionDuration: duration ? `${duration}ms` : undefined,
+      }}
       className={cn(
-        "translate-y-4 opacity-0 transition-all duration-700 ease-out",
-        isVisible && "translate-y-0 opacity-100",
+        "opacity-0 transition-all ease-out motion-reduce:opacity-100 motion-reduce:translate-x-0 motion-reduce:translate-y-0",
+        initialTransforms[direction],
+        isVisible && "translate-x-0 translate-y-0 opacity-100",
         className
       )}
     >
       {children}
     </div>
   )
-}
-
-type Props = {
-  children: React.ReactNode
-  className?: string
-  delay?: number
 }
