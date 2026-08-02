@@ -36,7 +36,7 @@ Parents don't want a "career roadmap" — they want confidence that their child 
 ## MVP product flow
 
 1. **Free Career Assessment** — captures interest, builds trust, no paywall.
-2. **Free preview** — top 3 recommended careers with a short "why."
+2. **Free preview** — at most 3 recommended careers, exactly one flagged as our recommendation, each with a short "why."
 3. **Unlock full Tech Career Blueprint (paid)** — the flagship deliverable.
 4. **Optional: Book a Career Strategy Call** — a mentor reviews the AI-generated blueprint and adds context. The mentor's role is to validate and refine, not to build the plan from scratch — this is what makes the human layer scalable.
 

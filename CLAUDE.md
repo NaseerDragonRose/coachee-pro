@@ -13,12 +13,11 @@
 
 ## Repo structure conventions
 
-This repo intentionally stays minimal: `CLAUDE.md`, `CLAUDE.local.md` (gitignored, personal overrides), `.gitignore`, and `/reference`. The fuller Claude Code project layout — `.claude/settings.json`, `rules/`, `commands/`, `skills/`, `agents/`, `hooks/`, `memory/`, `workflows/`, `mcp.json`, `AGENTS.md` — is deliberately **not** scaffolded yet. Add each piece only when there's real content for it, not as empty placeholders:
+This repo stays minimal, adding each `.claude/` piece only when there's real content for it, not as empty placeholders. So far that's `CLAUDE.md`, `CLAUDE.local.md` (gitignored, personal overrides), `.gitignore`, `/reference`, and `.claude/rules/` (`component-conventions.md` — hand-written component shape; `ui-conventions.md` — mobile-first, accessibility, and theming rules for all UI). The rest of the fuller Claude Code project layout — `commands/`, `skills/`, `agents/`, `hooks/`, `memory/`, `workflows/`, `mcp.json`, `AGENTS.md` — is still **not** scaffolded:
 
 | Add when... | Piece |
 | --- | --- |
 | We have actual dev commands worth automating (deploy, scaffold) | `.claude/commands/*.md` |
-| We have code-style/API/testing conventions worth enforcing on demand | `.claude/rules/*.md` |
 | We need deterministic enforcement (lint/format on save, blocked writes) | `.claude/hooks/*.sh` |
 | We define specialized subagents for this repo specifically | `.claude/agents/*.md`, `AGENTS.md` |
 | We need repeatable multi-step blueprints (feature-build, bug-fix cycle) | `.claude/workflows/*.md` |
@@ -36,7 +35,7 @@ This repo intentionally stays minimal: `CLAUDE.md`, `CLAUDE.local.md` (gitignore
 
 ## Current status
 
-Documentation phase complete. No application code yet. Next build target is Phase 1 (marketing website) — see `/reference/PRODUCT.md` roadmap section.
+Phase 1 (marketing website) is underway. The Next.js scaffold is live with dark/light theming (`next-themes`) and smooth scroll (Lenis); Home, About, Technology Careers, Contact, FAQ, Privacy, and Terms pages are built and styled. The free career assessment opens as a modal from every marketing CTA (18 questions with conditional branching, client-side only); submissions are logged, not delivered, until ADR-003 is wired. See `/reference/PRODUCT.md` roadmap section for the full Phase 1 page list and what's still outstanding.
 
 ## Tech stack at a glance
 

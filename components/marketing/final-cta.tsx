@@ -1,10 +1,14 @@
-import Link from "next/link"
+"use client"
+
 import { ArrowRight, Sparkles, ShieldCheck, Check } from "lucide-react"
 
 import { Reveal } from "@/components/marketing/reveal"
 import { Button } from "@/components/ui/button"
+import { useAssessment } from "@/components/assessment/assessment-provider"
 
 export const FinalCta = () => {
+  const { open } = useAssessment()
+
   return (
     <section className="px-6 py-12 sm:py-20">
       <Reveal className="mx-auto max-w-6xl overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 shadow-2xl shadow-indigo-500/10">
@@ -41,8 +45,7 @@ export const FinalCta = () => {
             <Button
               size="lg"
               className="h-12 px-8 text-base font-semibold shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.02] bg-indigo-600 hover:bg-indigo-500 text-white"
-              nativeButton={false}
-              render={<Link href="/" />}
+              onClick={open}
             >
               Start Free Assessment
               <ArrowRight className="ml-2 h-4 w-4" />

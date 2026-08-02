@@ -19,6 +19,7 @@ import {
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { useAssessment } from "@/components/assessment/assessment-provider"
 
 const NAV_ITEMS = [
   { href: "/technology-careers", label: "Tech Careers", icon: BookOpen },
@@ -32,6 +33,7 @@ export const Header = () => {
   const [scrolled, setScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
+  const { open } = useAssessment()
 
   // Prevent hydration mismatch for theme icons
   useEffect(() => {
@@ -55,13 +57,14 @@ export const Header = () => {
           <span className="hidden sm:inline text-slate-300">
             Free 10-Minute Career Assessment Engine is live for Class 11 & 12 students.
           </span>
-          <Link
-            href="/"
+          <button
+            type="button"
+            onClick={open}
             className="inline-flex items-center font-bold text-white hover:underline underline-offset-2"
           >
             <span>Take Test</span>
             <ChevronRight className="h-3 w-3 ml-0.5" />
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -136,9 +139,8 @@ export const Header = () => {
             {/* CTA Button */}
             <Button
               size="sm"
-              nativeButton={false}
+              onClick={open}
               className="relative h-9 overflow-hidden rounded-xl bg-indigo-600 px-4 text-xs font-semibold text-white shadow-md shadow-indigo-500/25 transition-all duration-300 hover:bg-indigo-700 hover:shadow-indigo-500/40 hover:scale-[1.02]"
-              render={<Link href="/" />}
             >
               <span className="relative z-10 flex items-center gap-1.5">
                 Start Free Test
@@ -204,10 +206,11 @@ export const Header = () => {
               <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
                 <Button
                   size="sm"
-                  nativeButton={false}
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    open()
+                  }}
                   className="w-full h-11 rounded-xl bg-indigo-600 text-xs font-bold text-white shadow-lg shadow-indigo-500/20"
-                  render={<Link href="/" />}
-                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Start Free Assessment (10 Mins)
                 </Button>

@@ -5,7 +5,8 @@ import { Target, Users, ShieldCheck, ArrowRight, Sparkles, Compass } from "lucid
 import { PageHeader } from "@/components/marketing/page-header"
 import { Reveal } from "@/components/marketing/reveal"
 import { Section } from "@/components/marketing/section"
-import { Button } from "@/components/ui/button"
+import { AssessmentCta } from "@/components/assessment/assessment-cta"
+import { Button, buttonVariants } from "@/components/ui/button"
 
 export const metadata: Metadata = {
   title: "About Us | CoacheePro",
@@ -122,15 +123,15 @@ export default function AboutPage() {
                 Take our free 10-minute career assessment engine to discover which technology roles best suit your cognitive strengths and personal interests.
               </p>
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Button
-                  size="lg"
-                  nativeButton={false}
-                  className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold h-11 px-6 text-xs shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.02]"
-                  render={<Link href="/" />}
+                <AssessmentCta
+                  className={buttonVariants({
+                    size: "lg",
+                    className: "w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold h-11 px-6 text-xs shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.02]",
+                  })}
                 >
                   <Compass className="mr-2 h-4 w-4" />
                   <span>Start Free Assessment</span>
-                </Button>
+                </AssessmentCta>
                 <Button
                   size="lg"
                   variant="outline"

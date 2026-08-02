@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { ShieldCheck } from "lucide-react"
 
+import { AssessmentCta } from "@/components/assessment/assessment-cta"
+
 const PLATFORM_LINKS = [
   { href: "/technology-careers", label: "Tech Careers" },
-  { href: "/", label: "10-Min Assessment" },
   { href: "/faq", label: "FAQ & Guidance" },
 ]
 
@@ -62,6 +63,11 @@ export const Footer = () => {
                   </Link>
                 </li>
               ))}
+              <li>
+                <AssessmentCta className="text-xs text-muted-foreground transition-colors hover:text-indigo-600 dark:hover:text-indigo-400">
+                  10-Min Assessment
+                </AssessmentCta>
+              </li>
             </ul>
           </nav>
         </div>

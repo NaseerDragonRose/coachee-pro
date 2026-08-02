@@ -7,7 +7,8 @@ import { PageHeader } from "@/components/marketing/page-header"
 import { CareerCard } from "@/components/marketing/career-card"
 import { Reveal } from "@/components/marketing/reveal"
 import { Section } from "@/components/marketing/section"
-import { Button } from "@/components/ui/button"
+import { AssessmentCta } from "@/components/assessment/assessment-cta"
+import { Button, buttonVariants } from "@/components/ui/button"
 
 export const metadata: Metadata = {
   title: "Technology Careers | CoacheePro",
@@ -37,15 +38,15 @@ export default function TechnologyCareersPage() {
                   Our assessment evaluates your problem-solving habits, academic interests, and working style to match you with your top 3 career fits.
                 </p>
               </div>
-              <Button
-                size="sm"
-                nativeButton={false}
-                className="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs h-10 px-4 shadow-md transition-all hover:scale-[1.01]"
-                render={<Link href="/" />}
+              <AssessmentCta
+                className={buttonVariants({
+                  size: "sm",
+                  className: "shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs h-10 px-4 shadow-md transition-all hover:scale-[1.01]",
+                })}
               >
                 <Compass className="mr-1.5 h-4 w-4" />
                 <span>Take Free Test</span>
-              </Button>
+              </AssessmentCta>
             </div>
           </Section>
         </Reveal>
@@ -76,15 +77,15 @@ export default function TechnologyCareersPage() {
                 Take our 10-minute career assessment to receive your personalized tech career match and free preview dashboard.
               </p>
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Button
-                  size="lg"
-                  nativeButton={false}
-                  className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold h-11 px-6 text-xs shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.02]"
-                  render={<Link href="/" />}
+                <AssessmentCta
+                  className={buttonVariants({
+                    size: "lg",
+                    className: "w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold h-11 px-6 text-xs shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.02]",
+                  })}
                 >
                   <Compass className="mr-2 h-4 w-4" />
                   <span>Start Free Assessment</span>
-                </Button>
+                </AssessmentCta>
                 <Button
                   size="lg"
                   variant="outline"
