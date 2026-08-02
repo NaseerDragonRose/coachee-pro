@@ -31,7 +31,7 @@ export const Section = ({
   return (
     <section
       className={cn(
-        "mx-auto w-full px-6 sm:px-8",
+        "mx-auto w-full px-6 sm:px-8 text-black",
         SPACING[spacing],
         className
       )}
@@ -44,20 +44,20 @@ export const Section = ({
           )}
         >
           {eyebrow && (
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
-              <Sparkles className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-3.5 py-1 text-xs font-black uppercase tracking-wider text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <Sparkles className="h-3.5 w-3.5 text-[#FF5500]" />
               <span>{eyebrow}</span>
             </div>
           )}
 
           {title && (
-            <h2 className="max-w-3xl text-balance text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-slate-50">
+            <h2 className="max-w-3xl text-balance text-3xl sm:text-5xl font-black tracking-tight text-black leading-[1.1]">
               {title}
             </h2>
           )}
 
           {description && (
-            <p className="max-w-2xl text-pretty text-sm text-muted-foreground sm:text-base leading-relaxed">
+            <p className="max-w-2xl text-balance text-sm sm:text-base font-semibold leading-relaxed text-slate-800">
               {description}
             </p>
           )}

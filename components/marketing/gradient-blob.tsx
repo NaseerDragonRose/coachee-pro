@@ -9,18 +9,18 @@ export const GradientBlob = ({ className }: Props) => {
     <div
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none",
+        "pointer-events-none absolute inset-0 -z-10 max-w-full overflow-hidden select-none",
         className
       )}
     >
-      {/* Top-Left Ambient Indigo Studio Glow */}
-      <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-transparent blur-[120px] dark:from-indigo-600/20 dark:via-purple-600/15" />
+      {/* 1. Neo-Brutalist Architectural Grid Lines Overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#0000000d_1px,transparent_1px),linear-gradient(to_bottom,#0000000d_1px,transparent_1px)] bg-[size:32px_32px]" />
 
-      {/* Top-Right Ambient Purple Studio Glow */}
-      <div className="absolute top-20 -right-40 h-[450px] w-[450px] rounded-full bg-gradient-to-bl from-purple-500/15 via-indigo-500/10 to-transparent blur-[120px] dark:from-purple-600/20 dark:via-indigo-600/15" />
+      {/* 2. Electric Orange Accent Dot-Matrix Pattern (Top Right) */}
+      <div className="absolute top-0 right-0 h-96 w-96 opacity-25 bg-[radial-gradient(#FF5500_1.5px,transparent_1.5px)] [background-size:16px_16px]" />
 
-      {/* Center Background Light Diffusion */}
-      <div className="absolute top-1/3 left-1/2 h-[350px] w-[600px] -translate-x-1/2 rounded-full bg-indigo-500/5 blur-[140px] dark:bg-indigo-500/10" />
+      {/* 3. Subtle Ink Black Accent Dot-Matrix Pattern (Bottom Left) */}
+      <div className="absolute bottom-0 left-0 h-80 w-80 opacity-15 bg-[radial-gradient(#000000_1.5px,transparent_1.5px)] [background-size:20px_20px]" />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRight, Sparkles } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 import { CAREERS } from "@/lib/careers"
 import { CareerCard } from "@/components/marketing/career-card"
@@ -29,15 +29,14 @@ export const CareerPreviewGrid = () => {
       <div className="mt-12 flex flex-col items-center justify-center gap-3">
         <Button
           size="lg"
-          variant="outline"
-          className="group h-12 border-slate-200/80 bg-white/50 px-8 text-sm font-semibold shadow-sm backdrop-blur-md transition-all hover:border-indigo-500/40 hover:bg-slate-50 hover:text-indigo-600 dark:border-slate-800 dark:bg-slate-950/50 dark:hover:border-indigo-500/30 dark:hover:bg-slate-900 dark:hover:text-indigo-400"
+          className="group h-13 rounded-full border-2 border-black bg-[#FF5500] hover:bg-[#E64D00] px-8 text-sm font-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           nativeButton={false}
           render={<Link href="/technology-careers" />}
         >
           <span>See All 10 Tech Careers</span>
-          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="ml-2 h-4 w-4 stroke-[3] transition-transform group-hover:translate-x-1" />
         </Button>
-        <span className="text-xs text-muted-foreground font-mono">
+        <span className="text-xs font-bold text-slate-700">
           Includes market demand, skill stacks, and salary ranges
         </span>
       </div>

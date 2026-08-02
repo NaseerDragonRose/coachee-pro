@@ -1,67 +1,51 @@
 import Link from "next/link"
-import { ArrowRight, Sparkles, ShieldCheck, Check } from "lucide-react"
+import { ArrowRight, ShieldCheck, Check } from "lucide-react"
 
 import { Reveal } from "@/components/marketing/reveal"
 import { Button } from "@/components/ui/button"
 
 export const FinalCta = () => {
   return (
-    <section className="px-6 py-12 sm:py-20">
-      <Reveal className="mx-auto max-w-6xl overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 shadow-2xl shadow-indigo-500/10">
-        <div className="relative flex w-full flex-col items-center px-6 py-16 text-center sm:px-16 sm:py-24">
+    <section className="py-12 sm:py-20 bg-[#FF5500] border-y-2 border-black text-white">
+      <Reveal className="mx-auto max-w-5xl px-6">
+        <div className="flex w-full flex-col items-center text-center">
           
-          {/* Ambient Glows */}
-          <div 
-            className="pointer-events-none absolute -top-24 left-1/2 h-72 w-96 -translate-x-1/2 rounded-full bg-indigo-500/20 blur-3xl" 
-            aria-hidden="true" 
-          />
-          <div 
-            className="pointer-events-none absolute -bottom-24 left-1/2 h-72 w-96 -translate-x-1/2 rounded-full bg-purple-500/15 blur-3xl" 
-            aria-hidden="true" 
-          />
-
-          {/* Eyebrow Badge */}
-          <div className="relative z-10 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold text-indigo-300">
-            <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
-            <span>Ready for Class of 2026 / 2027</span>
-          </div>
-
           {/* Main Headline */}
-          <h2 className="relative z-10 mt-6 max-w-2xl text-balance text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
-            Stop Guessing. <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Start Your Tech Journey</span> with Clarity.
+          <h2 className="text-balance text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] text-white max-w-3xl">
+            15 minutes now. Ten years of clarity.
           </h2>
 
           {/* Subtitle */}
-          <p className="relative z-10 mt-4 max-w-lg text-pretty text-sm leading-relaxed text-slate-400 sm:text-base">
-            Take the 10-minute structured assessment. Uncover your ideal tech role, key skills to learn, and exact college degree roadmap.
+          <p className="mt-4 max-w-xl text-balance text-base sm:text-lg font-bold text-white/90">
+            Your assessment is free, forever. Your career roadmap is generated in under a minute.
           </p>
 
           {/* CTA Action Button */}
-          <div className="relative z-10 mt-8 flex flex-col items-center gap-4 sm:flex-row">
+          <div className="mt-8">
             <Button
               size="lg"
-              className="h-12 px-8 text-base font-semibold shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.02] bg-indigo-600 hover:bg-indigo-500 text-white"
+              className="h-14 px-10 text-base font-black bg-white hover:bg-slate-100 text-black rounded-full border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               nativeButton={false}
               render={<Link href="/" />}
             >
-              Start Free Assessment
-              <ArrowRight className="ml-2 h-4 w-4" />
+              Take the free assessment
+              <ArrowRight className="ml-2 h-5 w-5 stroke-[3]" />
             </Button>
           </div>
 
           {/* Trust Checklist Footer */}
-          <div className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-6 text-xs font-medium text-slate-400">
-            <span className="inline-flex items-center gap-1.5">
-              <Check className="h-3.5 w-3.5 text-indigo-400" />
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs font-black uppercase text-white">
+            <span className="inline-flex items-center gap-1.5 bg-black/20 px-3 py-1 rounded-full border border-white/20">
+              <Check className="h-4 w-4 stroke-[3]" />
               100% Free to Start
             </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Check className="h-3.5 w-3.5 text-indigo-400" />
-              No Credit Card Required
+            <span className="inline-flex items-center gap-1.5 bg-black/20 px-3 py-1 rounded-full border border-white/20">
+              <Check className="h-4 w-4 stroke-[3]" />
+              No Credit Card
             </span>
-            <span className="inline-flex items-center gap-1.5">
-              <ShieldCheck className="h-3.5 w-3.5 text-indigo-400" />
-              No Account Needed to Preview
+            <span className="inline-flex items-center gap-1.5 bg-black/20 px-3 py-1 rounded-full border border-white/20">
+              <ShieldCheck className="h-4 w-4 stroke-[3]" />
+              Instant Roadmap Preview
             </span>
           </div>
 

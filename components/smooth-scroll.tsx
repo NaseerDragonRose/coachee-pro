@@ -7,7 +7,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     <ReactLenis
       root
       options={{
-        lerp: 0.08, // Lower value = smoother, heavier momentum (0.05 - 0.1)
+        lerp: 0.08,
         duration: 1.2,
         smoothWheel: true,
         wheelMultiplier: 1.0,

@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import {
   ShieldAlert,
   Database,
@@ -56,21 +55,23 @@ const POLICY_SECTIONS = [
 
 export default function PrivacyPage() {
   return (
-    <main className="flex flex-1 flex-col pb-16">
+    <main className="flex flex-1 flex-col pb-20 bg-[#F7F5F0] text-black">
       <PageHeader
         eyebrow="Legal & Compliance"
         title="Privacy Policy"
         subtitle="Transparent details on how we protect student privacy, handle assessment inputs, and secure payment data."
       />
 
-      <div className="mx-auto w-full max-w-4xl px-6 sm:px-8 space-y-10">
-        {/* Legal Disclaimer Callout */}
+      <div className="mx-auto w-full max-w-4xl px-6 sm:px-8 space-y-10 mt-4">
+        {/* Development Legal Disclaimer Callout */}
         <Reveal>
-          <div className="flex items-start gap-3.5 rounded-2xl border border-amber-500/30 bg-amber-50/60 p-4 sm:p-5 text-amber-900 backdrop-blur-md dark:border-amber-500/20 dark:bg-amber-950/30 dark:text-amber-200">
-            <ShieldAlert className="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
+          <div className="flex items-start gap-4 rounded-3xl border-2 border-black bg-amber-300 p-5 sm:p-6 text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border-2 border-black bg-white text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <ShieldAlert className="h-5 w-5 stroke-[2.5] text-[#FF5500]" />
+            </div>
             <div className="space-y-1 text-xs sm:text-sm leading-relaxed">
-              <p className="font-bold">Development Legal Disclaimer</p>
-              <p className="text-amber-800/90 dark:text-amber-300/80">
+              <p className="font-black uppercase tracking-wider text-black">Development Legal Disclaimer</p>
+              <p className="font-bold text-slate-900">
                 This is a preliminary privacy notice draft and must undergo final verification by legal counsel prior to commercial release, especially considering India DPDP regulations, Razorpay payment processing, and high school student user demographics.
               </p>
             </div>
@@ -84,12 +85,12 @@ export default function PrivacyPage() {
             return (
               <Reveal key={item.title} delay={index * 80}>
                 <Section title={item.title} centered={false} spacing="tight" className="px-0">
-                  <div className="rounded-2xl border border-slate-200/80 bg-white/80 p-6 shadow-sm transition-all dark:border-slate-800 dark:bg-slate-950/60">
-                    <div className="flex items-start gap-3.5">
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/80 dark:text-indigo-400">
-                        <Icon className="h-4 w-4" />
+                  <div className="rounded-3xl border-2 border-black bg-white p-6 sm:p-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border-2 border-black bg-[#FF5500] text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <Icon className="h-5 w-5 stroke-[2.5]" />
                       </div>
-                      <p className="text-sm text-slate-700 leading-relaxed dark:text-slate-300">
+                      <p className="text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed pt-1">
                         {item.content}
                       </p>
                     </div>
@@ -103,23 +104,23 @@ export default function PrivacyPage() {
         {/* Contact Section */}
         <Reveal delay={400}>
           <Section title="6. Contact Us" centered={false} spacing="tight" className="px-0">
-            <div className="rounded-2xl border border-indigo-100 bg-indigo-50/50 p-6 sm:p-8 backdrop-blur-md dark:border-indigo-900/40 dark:bg-indigo-950/20">
+            <div className="rounded-3xl border-2 border-black bg-white p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="space-y-1">
-                  <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                  <h3 className="text-lg font-black text-black">
                     Have Privacy Questions?
                   </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground">
+                  <p className="text-xs sm:text-sm font-bold text-slate-700">
                     Reach out directly to our data protection team regarding your information rights or assessment data.
                   </p>
                 </div>
                 <a
                   href="mailto:privacy@coacheepro.com"
-                  className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md transition-all hover:bg-indigo-700 hover:scale-[1.01]"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-black bg-[#FF5500] hover:bg-[#E64D00] px-6 py-3 text-xs font-black uppercase tracking-wider text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                 >
-                  <Mail className="h-4 w-4" />
+                  <Mail className="h-4 w-4 stroke-[2.5]" />
                   <span>privacy@coacheepro.com</span>
-                  <ExternalLink className="h-3.5 w-3.5 ml-1 opacity-70" />
+                  <ExternalLink className="h-3.5 w-3.5 ml-1 stroke-[2.5]" />
                 </a>
               </div>
             </div>

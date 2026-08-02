@@ -7,8 +7,6 @@ import {
   ArrowRight, 
   Menu, 
   X, 
-  Sparkles, 
-  ChevronRight, 
   Compass, 
   BookOpen, 
   GraduationCap, 
@@ -45,64 +43,44 @@ export const Header = () => {
 
   return (
     <>
-      {/* 1. Integrated Announcement Ticker (Top of page, scrolls away naturally) */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-indigo-900 via-indigo-950 to-slate-950 px-4 py-1.5 text-center text-[11px] font-medium text-indigo-200 z-40">
-        <div className="mx-auto flex max-w-6xl items-center justify-center gap-2">
-          <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/20 px-2 py-0.5 text-[10px] font-semibold text-indigo-300 border border-indigo-500/30">
-            <Sparkles className="h-3 w-3 text-indigo-400 animate-pulse" />
-            Class of 2026/2027
-          </span>
-          <span className="hidden sm:inline text-slate-300">
-            Free 10-Minute Career Assessment Engine is live for Class 11 & 12 students.
-          </span>
-          <Link
-            href="/"
-            className="inline-flex items-center font-bold text-white hover:underline underline-offset-2"
-          >
-            <span>Take Test</span>
-            <ChevronRight className="h-3 w-3 ml-0.5" />
-          </Link>
-        </div>
-      </div>
-
-      {/* 2. Floating Viewport-Fixed Navigation Header */}
+      {/* Floating Neo-Brutalist Navigation Header */}
       <div
         className={`fixed inset-x-0 z-50 px-4 transition-all duration-300 sm:px-8 ${
-          scrolled ? "top-3" : "top-10 sm:top-9"
+          scrolled ? "top-3" : "top-4 sm:top-5"
         }`}
       >
         <header
-          className={`mx-auto flex w-full max-w-6xl items-center justify-between rounded-2xl border px-4 py-2.5 transition-all duration-300 ${
+          className={`mx-auto flex w-full max-w-6xl items-center justify-between rounded-full border-2 border-black px-5 py-2.5 transition-all duration-300 bg-white ${
             scrolled
-              ? "border-slate-200/90 bg-white/95 shadow-xl shadow-slate-950/10 backdrop-blur-xl dark:border-slate-800/90 dark:bg-slate-950/95 dark:shadow-indigo-500/5"
-              : "border-slate-200/60 bg-white/80 shadow-sm backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-950/80"
+              ? "shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+              : "shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           }`}
         >
           {/* Logo & Brand Identity */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-500/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-indigo-500/35">
-              <Compass className="h-5 w-5 transition-transform duration-300 group-hover:rotate-45" />
+            <div className="relative flex h-9 w-9 items-center justify-center rounded-xl border-2 border-black bg-[#FF5500] text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-transform duration-200 group-hover:-translate-y-0.5">
+              <Compass className="h-5 w-5 stroke-[2.5] transition-transform duration-300 group-hover:rotate-45" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
-                <span className="text-base font-black tracking-tight text-slate-900 dark:text-slate-50">
-                  Coachee<span className="text-indigo-600 dark:text-indigo-400">Pro</span>
+                <span className="text-lg font-black tracking-tight text-black">
+                  Coachee<span className="text-[#FF5500]">Pro</span>
                 </span>
-                <span className="rounded bg-indigo-100 dark:bg-indigo-950/80 px-1.5 py-0.2 text-[9px] font-bold text-indigo-700 dark:text-indigo-300">
+                <span className="rounded-md bg-black px-1.5 py-0.5 text-[9px] font-black text-white border border-black">
                   AI
                 </span>
               </div>
-              <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 leading-none">
+              <span className="text-[10px] font-bold text-slate-700 leading-none">
                 High School Tech Guidance
               </span>
             </div>
           </Link>
 
-          {/* Desktop Nav Items */}
-          <nav aria-label="Main Navigation" className="hidden items-center gap-1 rounded-full border border-slate-200/80 bg-slate-100/80 p-1 md:flex dark:border-slate-800/80 dark:bg-slate-900/80">
+          {/* Desktop Navigation */}
+          <nav aria-label="Main Navigation" className="hidden items-center gap-2 rounded-full border-2 border-black bg-[#F7F5F0] px-3 py-1 md:flex">
             <Link
               href="/"
-              className="rounded-full px-3.5 py-1.5 text-xs font-semibold text-slate-800 transition-all hover:bg-white hover:text-indigo-600 hover:shadow-sm dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-indigo-400"
+              className="rounded-full px-3.5 py-1 text-xs font-black text-black transition-colors hover:text-[#FF5500]"
             >
               Home
             </Link>
@@ -110,7 +88,7 @@ export const Header = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-full px-3.5 py-1.5 text-xs font-semibold text-slate-600 transition-all hover:bg-white hover:text-indigo-600 hover:shadow-sm dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-indigo-400"
+                className="rounded-full px-3.5 py-1 text-xs font-bold text-slate-800 transition-colors hover:text-[#FF5500]"
               >
                 {item.label}
               </Link>
@@ -119,70 +97,70 @@ export const Header = () => {
 
           {/* Actions & Primary CTA */}
           <div className="hidden items-center gap-2.5 md:flex">
-            {/* Dark / Light Theme Switcher */}
+            {/* Theme Toggle */}
             <button
               type="button"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200/80 bg-slate-100/80 text-slate-700 transition-colors hover:bg-slate-200/80 dark:border-slate-800/80 dark:bg-slate-900/80 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border-2 border-black bg-white text-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
               aria-label="Toggle light/dark theme"
             >
               {mounted && (theme === "dark" ? (
-                <Sun className="h-4 w-4 text-amber-400" />
+                <Sun className="h-4 w-4 text-amber-500 stroke-[2.5]" />
               ) : (
-                <Moon className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                <Moon className="h-4 w-4 text-black stroke-[2.5]" />
               ))}
             </button>
 
-            {/* CTA Button */}
+            {/* Main Action Button */}
             <Button
               size="sm"
               nativeButton={false}
-              className="relative h-9 overflow-hidden rounded-xl bg-indigo-600 px-4 text-xs font-semibold text-white shadow-md shadow-indigo-500/25 transition-all duration-300 hover:bg-indigo-700 hover:shadow-indigo-500/40 hover:scale-[1.02]"
+              className="relative h-10 overflow-hidden rounded-full border-2 border-black bg-[#FF5500] hover:bg-[#E64D00] px-5 text-xs font-black text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
               render={<Link href="/" />}
             >
               <span className="relative z-10 flex items-center gap-1.5">
-                Start Free Test
-                <ArrowRight className="h-3.5 w-3.5" />
+                Free Assessment
+                <ArrowRight className="h-4 w-4 stroke-[3]" />
               </span>
             </Button>
           </div>
 
-          {/* Mobile Drawer & Theme Trigger */}
+          {/* Mobile Menu & Theme Trigger */}
           <div className="flex items-center gap-2 md:hidden">
             <button
               type="button"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200/80 bg-slate-50 text-slate-700 transition-colors dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border-2 border-black bg-white text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               aria-label="Toggle theme"
             >
               {mounted && (theme === "dark" ? (
-                <Sun className="h-4 w-4 text-amber-400" />
+                <Sun className="h-4 w-4 text-amber-500 stroke-[2.5]" />
               ) : (
-                <Moon className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                <Moon className="h-4 w-4 text-black stroke-[2.5]" />
               ))}
             </button>
 
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200/80 bg-slate-50 text-slate-700 transition-colors dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border-2 border-black bg-white text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              {mobileMenuOpen ? <X className="h-5 w-5 stroke-[3]" /> : <Menu className="h-5 w-5 stroke-[3]" />}
             </button>
           </div>
         </header>
 
         {/* Mobile Slide-Down Sheet */}
         {mobileMenuOpen && (
-          <div className="mx-auto mt-2 w-full max-w-6xl rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-2xl backdrop-blur-2xl md:hidden dark:border-slate-800/90 dark:bg-slate-950/95 animate-in fade-in slide-in-from-top-3 duration-200">
-            <nav className="flex flex-col gap-1">
+          <div className="mx-auto mt-2 w-full max-w-6xl rounded-2xl border-2 border-black bg-[#F7F5F0] p-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:hidden animate-in fade-in slide-in-from-top-3 duration-200">
+            <nav className="flex flex-col gap-2">
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-bold text-slate-900 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-900"
+                className="flex items-center gap-3 rounded-xl border-2 border-black bg-white p-3 text-sm font-black text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                <Compass className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                <Compass className="h-4 w-4 text-[#FF5500] stroke-[2.5]" />
                 Home Page
               </Link>
 
@@ -193,25 +171,25 @@ export const Header = () => {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-900"
+                    className="flex items-center gap-3 rounded-xl border-2 border-black bg-white p-3 text-sm font-extrabold text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                   >
-                    <Icon className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                    <Icon className="h-4 w-4 text-slate-700 stroke-[2.5]" />
                     {item.label}
                   </Link>
                 )
               })}
 
-              <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+              <div className="mt-2 pt-3 border-t-2 border-black space-y-2">
                 <Button
                   size="sm"
                   nativeButton={false}
-                  className="w-full h-11 rounded-xl bg-indigo-600 text-xs font-bold text-white shadow-lg shadow-indigo-500/20"
+                  className="w-full h-12 rounded-full border-2 border-black bg-[#FF5500] hover:bg-[#E64D00] text-xs font-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                   render={<Link href="/" />}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Start Free Assessment (10 Mins)
                 </Button>
-                <p className="text-center text-[11px] font-medium text-slate-400">
+                <p className="text-center text-[11px] font-bold text-slate-700">
                   No credit card · Free preview included
                 </p>
               </div>
@@ -221,7 +199,7 @@ export const Header = () => {
       </div>
 
       {/* Spacer to preserve layout height */}
-      <div className="h-12 sm:h-14" />
+      <div className="h-16 sm:h-20" />
     </>
   )
 }

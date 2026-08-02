@@ -25,8 +25,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#020617" },
+    { media: "(prefers-color-scheme: light)", color: "#F7F5F0" },
+    { media: "(prefers-color-scheme: dark)", color: "#171717" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -43,7 +43,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-screen flex flex-col bg-background text-foreground overflow-x-clip selection:bg-indigo-500/20 selection:text-indigo-600 dark:selection:text-indigo-400">
+      <body className="min-h-screen flex flex-col bg-background text-foreground overflow-x-clip selection:bg-[#FF5500] selection:text-white">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
