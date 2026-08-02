@@ -12,15 +12,19 @@ export default function Home() {
     <main className="flex flex-1 flex-col">
       <Hero />
       <Reveal>
-        <Section spacing="tight" className="text-center">
-          <p className="text-pretty text-lg text-muted-foreground">
-            YouTube, relatives, teachers, influencers: everyone has an
-            opinion on your future, and most of them contradict each other.
-            Parents want more than reassurance; they want confidence their
-            child isn&rsquo;t about to waste years on the wrong path.
-            CoacheePro cuts through the noise with one clear, structured
-            answer.
-          </p>
+        <Section
+          spacing="tight"
+          eyebrow="The Reality"
+          title="Everyone has an opinion about your future."
+          description="Parents, teachers, relatives, and social media all mean well—but their advice is based on their experiences, not your unique strengths, interests, and ambitions."
+        >
+          <div className="mx-auto max-w-3xl px-4">
+            <div className="rounded-2xl border border-indigo-500/20 bg-indigo-500/10 p-5 text-center dark:border-indigo-400/20 dark:bg-indigo-400/10">
+              <p className="text-pretty text-sm font-semibold leading-relaxed text-slate-900 sm:text-base dark:text-slate-50">
+                CoacheePro helps you cut through the noise with a structured assessment and a personalized career path, so you can make one of life&apos;s biggest decisions with clarity and confidence.
+              </p>
+            </div>
+          </div>
         </Section>
       </Reveal>
       <HowItWorks />
