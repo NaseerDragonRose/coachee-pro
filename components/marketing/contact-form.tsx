@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 
 const contactFormSchema = z.object({
   role: z.enum(["student", "parent", "counselor", "other"], {
-    required_error: "Please select who you are",
+    error: "Please select who you are",
   }),
   name: z.string().trim().min(1, "Name is required"),
   email: z
