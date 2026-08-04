@@ -50,7 +50,7 @@ export const Hero = () => {
               nativeButton={false}
               render={<Link href="/technology-careers" />}
             >
-              Explore 10 Tech Paths
+              Explore Tech Paths
             </Button>
           </div>
 

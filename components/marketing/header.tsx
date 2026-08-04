@@ -84,17 +84,9 @@ export const Header = () => {
               <Compass className="h-5 w-5 transition-transform duration-300 group-hover:rotate-45" />
             </div>
             <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="text-base font-black tracking-tight text-slate-900 dark:text-slate-50">
-                  Coachee<span className="text-indigo-600 dark:text-indigo-400">Pro</span>
-                </span>
-                <span className="rounded bg-indigo-100 dark:bg-indigo-950/80 px-1.5 py-0.2 text-[9px] font-bold text-indigo-700 dark:text-indigo-300">
-                  AI
-                </span>
-              </div>
-              <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 leading-none">
-                High School Tech Guidance
-              </span>
+              <span className="text-base font-black tracking-tight text-slate-900 dark:text-slate-50">
+                Coachee<span className="text-indigo-600 dark:text-indigo-400">Pro</span>
+              </span>      
             </div>
           </Link>
 

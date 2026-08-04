@@ -34,7 +34,7 @@ export const CareerPreviewGrid = () => {
           nativeButton={false}
           render={<Link href="/technology-careers" />}
         >
-          <span>See All 10 Tech Careers</span>
+          <span>Explore All Tech Careers</span>
           <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Button>
         <span className="text-xs text-muted-foreground font-mono">

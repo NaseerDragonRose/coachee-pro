@@ -42,23 +42,30 @@ export const HowItWorks = () => {
   return (
     <Section
       eyebrow="Simple 4-Step Process"
-      title="How You Find the Right Tech Path"
-      description="No complex forms or long processes. Just 10 minutes to choose your degree, tech skills, and career direction with confidence."
+      title="Career Clarity Starts Here"
+      description={
+        <span className="mt-2 flex flex-col items-center gap-1.5 text-center font-sans">
+          <span className="text-base font-semibold tracking-normal text-indigo-400 dark:text-indigo-400 sm:text-md">
+            Answer a few questions today. Make better career decisions tomorrow.
+          </span>
+          <span className="max-w-2xl text-sm font-normal text-slate-500 dark:text-slate-400 sm:text-base">
+            Just 10 minutes to choose your degree, tech skills, and career direction with confidence.
+          </span>
+        </span>
+      }
       spacing="loose"
       className="max-w-6xl"
     >
       <div className="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        
         {/* Visual Pipeline Connecting Line for Desktop */}
-        <div 
-          className="absolute top-1/2 left-0 hidden h-[2px] w-full -translate-y-12 bg-gradient-to-r from-transparent via-slate-200 to-transparent lg:block dark:via-slate-800" 
-          aria-hidden="true" 
+        <div
+          className="absolute top-1/2 left-0 hidden h-[2px] w-full -translate-y-12 bg-gradient-to-r from-transparent via-slate-200 to-transparent lg:block dark:via-slate-800"
+          aria-hidden="true"
         />
 
         {STEPS.map(({ step, icon: Icon, title, description, badge }, index) => (
           <Reveal key={title} delay={index * 120}>
             <div className="group relative flex h-full flex-col justify-between rounded-2xl border border-slate-200/80 bg-white/70 p-6 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-indigo-500/40 hover:shadow-xl hover:shadow-indigo-500/10 dark:border-slate-800 dark:bg-slate-950/60 dark:hover:border-indigo-500/30">
-              
               {/* Header Row: Step Number & Icon */}
               <div>
                 <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800/80">
@@ -72,10 +79,10 @@ export const HowItWorks = () => {
 
                 {/* Step Content */}
                 <div className="mt-4">
-                  <h3 className="text-base font-bold tracking-tight text-slate-900 dark:text-slate-100">
+                  <h3 className="font-sans text-base font-bold tracking-tight text-slate-900 dark:text-slate-100">
                     {title}
                   </h3>
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                  <p className="mt-2 font-sans text-xs leading-relaxed text-muted-foreground">
                     {description}
                   </p>
                 </div>
@@ -83,11 +90,10 @@ export const HowItWorks = () => {
 
               {/* Bottom Badge */}
               <div className="mt-6 pt-3">
-                <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600 transition-colors group-hover:bg-indigo-50 group-hover:text-indigo-700 dark:bg-slate-900 dark:text-slate-400 dark:group-hover:bg-indigo-950/60 dark:group-hover:text-indigo-300">
+                <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 font-sans text-[11px] font-semibold text-slate-600 transition-colors group-hover:bg-indigo-50 group-hover:text-indigo-700 dark:bg-slate-900 dark:text-slate-400 dark:group-hover:bg-indigo-950/60 dark:group-hover:text-indigo-300">
                   {badge}
                 </span>
               </div>
-
             </div>
           </Reveal>
         ))}
