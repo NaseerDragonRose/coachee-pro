@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import type { ReactNode } from "react"
+import { useRouter } from "next/navigation"
 
 import { loadBlueprint } from "@/lib/blueprint/storage"
 import { cognitoAuthService } from "@/services/auth/cognito-auth-service"
@@ -14,6 +15,7 @@ const AssessmentContext = createContext<AssessmentContextValue | null>(null)
 export const AssessmentProvider = ({ children }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [initialStage, setInitialStage] = useState<Stage | null>(null)
+  const router = useRouter()
 
   const open = useCallback(() => setIsOpen(true), [])
   const close = useCallback(() => setIsOpen(false), [])
@@ -39,13 +41,17 @@ export const AssessmentProvider = ({ children }: Props) => {
 
       cognitoAuthService.getSession().then((session) => {
         // Signup can fail to complete (denied consent, refresh mid-flow);
-        // land back on the signup screen to retry rather than a broken
-        // "done" state with no session.
-        setInitialStage(session ? "done" : "signup")
+        // land back on the signup screen to retry rather than sending an
+        // unauthenticated visitor to the auth-gated dashboard.
+        if (session) {
+          router.replace("/dashboard")
+          return
+        }
+        setInitialStage("signup")
         setIsOpen(true)
       })
     }
-  }, [])
+  }, [router])
 
   const value = useMemo(
     () => ({ isOpen, open, close, initialStage, consumeInitialStage }),

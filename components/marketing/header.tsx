@@ -144,9 +144,12 @@ export const Header = () => {
             {mounted && (
               status === "authenticated" ? (
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <Link
+                    href="/dashboard"
+                    className="text-xs font-semibold text-slate-700 transition-colors hover:text-indigo-600 dark:text-slate-300 dark:hover:text-indigo-400"
+                  >
                     {session?.user?.name?.split(" ")[0]}
-                  </span>
+                  </Link>
                   <Button
                     size="sm"
                     variant="ghost"
@@ -160,7 +163,7 @@ export const Header = () => {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => signIn("cognito", { callbackUrl: "/" })}
+                  onClick={() => signIn("cognito", { callbackUrl: "/dashboard" })}
                   className="h-9 rounded-xl px-2.5 text-xs font-semibold"
                 >
                   Log in
@@ -239,9 +242,13 @@ export const Header = () => {
                 {mounted && (
                   status === "authenticated" ? (
                     <div className="flex flex-col gap-2">
-                      <p className="px-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                        Signed in as {session?.user?.name?.split(" ")[0]}
-                      </p>
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="px-1 text-sm font-semibold text-slate-700 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-indigo-400"
+                      >
+                        Signed in as {session?.user?.name?.split(" ")[0]} — View Dashboard
+                      </Link>
                       <Button
                         size="sm"
                         variant="outline"
@@ -260,7 +267,7 @@ export const Header = () => {
                       variant="outline"
                       onClick={() => {
                         setMobileMenuOpen(false)
-                        signIn("cognito", { callbackUrl: "/" })
+                        signIn("cognito", { callbackUrl: "/dashboard" })
                       }}
                       className="h-11 w-full rounded-xl text-sm font-semibold"
                     >

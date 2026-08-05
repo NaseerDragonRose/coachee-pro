@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
-import { useSession } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -12,7 +11,6 @@ import type { AnswerValue, Answers, AssessmentSubmission, Lead } from "@/lib/ass
 import { saveBlueprint } from "@/lib/blueprint/storage"
 import { mockBlueprintService } from "@/services/ai/mock-blueprint-service"
 
-import { ConfirmationScreen } from "./confirmation-screen"
 import { LeadCaptureForm } from "./lead-capture-form"
 import { QuestionScreen } from "./question-screen"
 import { SignupScreen } from "./signup-screen"
@@ -20,7 +18,7 @@ import { TeaserScreen } from "./teaser-screen"
 import { useAssessment } from "./assessment-provider"
 import { WelcomeScreen } from "./welcome-screen"
 
-export type Stage = "welcome" | "questions" | "teaser" | "capture" | "signup" | "done"
+export type Stage = "welcome" | "questions" | "teaser" | "capture" | "signup"
 
 const hasContent = (value: AnswerValue | undefined): boolean => {
   if (value === undefined) return false
@@ -29,20 +27,18 @@ const hasContent = (value: AnswerValue | undefined): boolean => {
   return true
 }
 
-export const AssessmentFlow = ({ onClose }: Props) => {
+export const AssessmentFlow = () => {
   const [stage, setStage] = useState<Stage>("welcome")
   const [answers, setAnswers] = useState<Answers>({})
   const [index, setIndex] = useState(0)
   const [showErrors, setShowErrors] = useState(false)
   const [hasDraft, setHasDraft] = useState(false)
-  const [lead, setLead] = useState<Lead | null>(null)
 
   const [maxScreenCount, setMaxScreenCount] = useState(0)
 
   const headingRef = useRef<HTMLDivElement>(null)
 
   const { initialStage, consumeInitialStage } = useAssessment()
-  const { data: session } = useSession()
 
   useEffect(() => {
     // The post-signup OAuth redirect lands the browser back here with no
@@ -150,7 +146,6 @@ export const AssessmentFlow = ({ onClose }: Props) => {
     saveBlueprint(blueprint)
 
     clearDraft()
-    setLead(captured)
     setStage("signup")
   }
 
@@ -182,14 +177,6 @@ export const AssessmentFlow = ({ onClose }: Props) => {
     return (
       <div ref={headingRef} tabIndex={-1} className="overflow-y-auto px-5 py-6 outline-none" data-lenis-prevent>
         <SignupScreen />
-      </div>
-    )
-  }
-
-  if (stage === "done") {
-    return (
-      <div ref={headingRef} tabIndex={-1} className="overflow-y-auto px-5 py-6 outline-none" data-lenis-prevent>
-        <ConfirmationScreen name={lead?.name ?? session?.user?.name ?? undefined} onClose={onClose} />
       </div>
     )
   }
@@ -238,8 +225,4 @@ export const AssessmentFlow = ({ onClose }: Props) => {
       </div>
     </div>
   )
-}
-
-type Props = {
-  onClose: () => void
 }
