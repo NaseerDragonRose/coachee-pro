@@ -33,7 +33,7 @@ Supporting services: OpenAI (behind an internal AI service interface), Razorpay,
 | Frontend | Next.js (TypeScript), Tailwind CSS, shadcn/ui | Confirmed | SEO for organic traffic, one codebase for marketing + app, fast dev velocity |
 | Hosting | AWS Amplify | Confirmed (explicit AWS-first decision) | Managed CI/CD + CDN for Next.js, stays in the AWS ecosystem |
 | Backend | Next.js API routes | Confirmed for MVP | No separate backend service needed until load/complexity demands it; can extract to NestJS or a Lambda-based service later without changing the frontend |
-| Auth | AWS Cognito (leaning) vs. Clerk vs. Auth.js | **Pending** | See ADR-001 — deliberately not locked until Phase 2 implementation |
+| Auth | AWS Cognito + NextAuth v4 | Confirmed | See ADR-001 — Google federation only in v1, JWT sessions, no database |
 | Database | PostgreSQL | Confirmed | Relational data (users, assessments, blueprints, bookings, payments) fits relational modeling; never revisit this |
 | DB hosting | RDS vs. Aurora Serverless vs. self-managed | **Pending** | See ADR-005 |
 | ORM | Prisma | Confirmed | Type-safe schema evolution, database-agnostic if we ever needed to move off Postgres (we won't, but keeps the option) |

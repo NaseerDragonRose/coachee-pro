@@ -6,7 +6,7 @@ Format per decision: requirements, options with pros/cons/cost/exit-strategy, an
 
 ## ADR-001 — Authentication
 
-**Status:** Pending — decide at start of Phase 2 (User Accounts)
+**Status:** Decided (2026-08-05) — AWS Cognito
 
 **Requirements:** Google login, email login, future MFA, JWT/OAuth2, role-based access (Student/Parent now; Mentor/Admin later), fits an AWS-first stack.
 
@@ -28,7 +28,7 @@ Format per decision: requirements, options with pros/cons/cost/exit-strategy, an
 - **Cost (MVP scale):** No vendor fee; cost is engineering time.
 - **Exit strategy:** Easiest to swap out since it's already "just our code," but the most work to keep secure over time.
 
-**Decision:** TBD at Phase 2 kickoff. Current lean is Cognito given the AWS-first principle and multi-role roadmap (Student/Parent/Mentor/Admin), but not locked.
+**Decision:** Decided (2026-08-05) — AWS Cognito, with a Cognito User Pool federated to Google as the only identity provider for v1 (no native Cognito email/password sign-in yet — that's a separate future decision if needed). Next.js integrates via NextAuth v4 (`next-auth@4.24.15`; v5/"Auth.js" was considered but is still beta-only, and this project only takes stable dependencies) as a thin integration layer — Cognito remains the actual identity provider. Provisioned via a CDK stack (`infra/`), consistent with ADR-002. Sessions are JWT-only; no database was introduced for this (see ADR-005 note below) since nothing in this phase's scope needs to look up a user by ID yet.
 
 ---
 
@@ -109,6 +109,8 @@ Format per decision: requirements, options with pros/cons/cost/exit-strategy, an
 - **Cost:** Can undercut RDS at very low, spiky traffic; converges toward RDS cost as load becomes steady.
 
 **Decision:** TBD before Phase 2. Given MVP traffic will start near zero, Aurora Serverless v2 is worth pricing out against a small RDS instance at implementation time rather than assuming either now.
+
+**Note (2026-08-05):** ADR-001's Cognito integration deliberately avoided needing this — sessions are JWT-only with no Users table. This ADR is still genuinely pending; it wasn't resolved by the auth work, just not forced by it. It'll actually be needed once a Users table, Blueprint persistence, or payments require server-side storage.
 
 ---
 

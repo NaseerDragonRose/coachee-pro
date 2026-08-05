@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SessionProvider } from "@/components/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import "./globals.css";
@@ -50,7 +51,9 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <SmoothScroll>{children}</SmoothScroll>
+          <SessionProvider>
+            <SmoothScroll>{children}</SmoothScroll>
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>

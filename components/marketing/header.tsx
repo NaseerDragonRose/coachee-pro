@@ -3,15 +3,16 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useTheme } from "next-themes"
-import { 
-  ArrowRight, 
-  Menu, 
-  X, 
-  Sparkles, 
-  ChevronRight, 
-  Compass, 
-  BookOpen, 
-  GraduationCap, 
+import { signIn, signOut, useSession } from "next-auth/react"
+import {
+  ArrowRight,
+  Menu,
+  X,
+  Sparkles,
+  ChevronRight,
+  Compass,
+  BookOpen,
+  GraduationCap,
   HelpCircle,
   PhoneCall,
   Sun,
@@ -34,6 +35,7 @@ export const Header = () => {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
   const { open } = useAssessment()
+  const { data: session, status } = useSession()
 
   useEffect(() => {
     // Prevent hydration mismatch for theme icons — mounted state can only be
@@ -138,6 +140,34 @@ export const Header = () => {
               ))}
             </button>
 
+            {/* Login state */}
+            {mounted && (
+              status === "authenticated" ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    {session?.user?.name?.split(" ")[0]}
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="h-9 rounded-xl px-2.5 text-xs font-semibold"
+                  >
+                    Sign out
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => signIn("cognito", { callbackUrl: "/" })}
+                  className="h-9 rounded-xl px-2.5 text-xs font-semibold"
+                >
+                  Log in
+                </Button>
+              )
+            )}
+
             {/* CTA Button */}
             <Button
               size="sm"
@@ -206,6 +236,38 @@ export const Header = () => {
               })}
 
               <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                {mounted && (
+                  status === "authenticated" ? (
+                    <div className="flex flex-col gap-2">
+                      <p className="px-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                        Signed in as {session?.user?.name?.split(" ")[0]}
+                      </p>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setMobileMenuOpen(false)
+                          signOut({ callbackUrl: "/" })
+                        }}
+                        className="h-11 w-full rounded-xl text-sm font-semibold"
+                      >
+                        Sign out
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setMobileMenuOpen(false)
+                        signIn("cognito", { callbackUrl: "/" })
+                      }}
+                      className="h-11 w-full rounded-xl text-sm font-semibold"
+                    >
+                      Log in
+                    </Button>
+                  )
+                )}
                 <Button
                   size="sm"
                   onClick={() => {

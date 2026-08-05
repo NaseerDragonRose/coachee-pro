@@ -35,7 +35,7 @@ This repo stays minimal, adding each `.claude/` piece only when there's real con
 
 ## Current status
 
-Phase 1 (marketing website) is underway. The Next.js scaffold is live with dark/light theming (`next-themes`) and smooth scroll (Lenis); Home, About, Technology Careers, Contact, FAQ, Privacy, and Terms pages are built and styled. The free career assessment opens as a modal from every marketing CTA (18 questions with conditional branching, client-side only); submissions are logged, not delivered, until ADR-003 is wired. See `/reference/PRODUCT.md` roadmap section for the full Phase 1 page list and what's still outstanding.
+Phase 1 (marketing website) is underway. The Next.js scaffold is live with dark/light theming (`next-themes`) and smooth scroll (Lenis); Home, About, Technology Careers, Contact, FAQ, Privacy, and Terms pages are built and styled. The free career assessment opens as a modal from every marketing CTA (18 questions with conditional branching, client-side only); submissions are logged, not delivered, until ADR-003 is wired. See `/reference/PRODUCT.md` roadmap section for the full Phase 1 page list and what's still outstanding. A mock AI blueprint-generation service produces a full career-match data contract (`lib/blueprint/`, `services/ai/mock/`) after the assessment completes, and Google sign-in via Cognito (`services/auth/`, `infra/`) is required immediately after — the assessment flow's `signup` stage, before the confirmation screen.
 
 ## Tech stack at a glance
 
@@ -43,7 +43,7 @@ Phase 1 (marketing website) is underway. The Next.js scaffold is live with dark/
 | --- | --- | --- |
 | Frontend | Next.js (TypeScript) + Tailwind + shadcn/ui | Confirmed |
 | Hosting | AWS Amplify | Confirmed |
-| Auth | AWS Cognito (leaning) vs Clerk vs Auth.js | Pending — ADR-001 |
+| Auth | AWS Cognito + NextAuth v4 | Confirmed — ADR-001 |
 | Database | PostgreSQL | Confirmed (hosting choice pending — ADR-005) |
 | ORM | Prisma | Confirmed |
 | File storage | Amazon S3 | Confirmed |

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -14,10 +15,12 @@ import { mockBlueprintService } from "@/services/ai/mock-blueprint-service"
 import { ConfirmationScreen } from "./confirmation-screen"
 import { LeadCaptureForm } from "./lead-capture-form"
 import { QuestionScreen } from "./question-screen"
+import { SignupScreen } from "./signup-screen"
 import { TeaserScreen } from "./teaser-screen"
+import { useAssessment } from "./assessment-provider"
 import { WelcomeScreen } from "./welcome-screen"
 
-type Stage = "welcome" | "questions" | "teaser" | "capture" | "done"
+export type Stage = "welcome" | "questions" | "teaser" | "capture" | "signup" | "done"
 
 const hasContent = (value: AnswerValue | undefined): boolean => {
   if (value === undefined) return false
@@ -37,6 +40,20 @@ export const AssessmentFlow = ({ onClose }: Props) => {
   const [maxScreenCount, setMaxScreenCount] = useState(0)
 
   const headingRef = useRef<HTMLDivElement>(null)
+
+  const { initialStage, consumeInitialStage } = useAssessment()
+  const { data: session } = useSession()
+
+  useEffect(() => {
+    // The post-signup OAuth redirect lands the browser back here with no
+    // in-memory stage — assessment-provider.tsx figures out where to
+    // resume (done vs. signup) and hands it over via context; this effect
+    // applies it once, then clears it so a later open() starts fresh.
+    if (!initialStage) return
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setStage(initialStage)
+    consumeInitialStage()
+  }, [initialStage, consumeInitialStage])
 
   const screens = visibleScreens(answers)
   const screen = screens[index]
@@ -134,7 +151,7 @@ export const AssessmentFlow = ({ onClose }: Props) => {
 
     clearDraft()
     setLead(captured)
-    setStage("done")
+    setStage("signup")
   }
 
   if (stage === "welcome") {
@@ -161,10 +178,18 @@ export const AssessmentFlow = ({ onClose }: Props) => {
     )
   }
 
+  if (stage === "signup") {
+    return (
+      <div ref={headingRef} tabIndex={-1} className="overflow-y-auto px-5 py-6 outline-none" data-lenis-prevent>
+        <SignupScreen />
+      </div>
+    )
+  }
+
   if (stage === "done") {
     return (
       <div ref={headingRef} tabIndex={-1} className="overflow-y-auto px-5 py-6 outline-none" data-lenis-prevent>
-        <ConfirmationScreen name={lead?.name} onClose={onClose} />
+        <ConfirmationScreen name={lead?.name ?? session?.user?.name ?? undefined} onClose={onClose} />
       </div>
     )
   }
