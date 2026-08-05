@@ -8,6 +8,8 @@ import { Progress } from "@/components/ui/progress"
 import { isScreenComplete, pruneAnswers, screenIndexOf, visibleScreens } from "@/lib/assessment/flow"
 import { clearDraft, loadDraft, saveDraft } from "@/lib/assessment/storage"
 import type { AnswerValue, Answers, AssessmentSubmission, Lead } from "@/lib/assessment/types"
+import { saveBlueprint } from "@/lib/blueprint/storage"
+import { mockBlueprintService } from "@/services/ai/mock-blueprint-service"
 
 import { ConfirmationScreen } from "./confirmation-screen"
 import { LeadCaptureForm } from "./lead-capture-form"
@@ -32,14 +34,18 @@ export const AssessmentFlow = ({ onClose }: Props) => {
   const [hasDraft, setHasDraft] = useState(false)
   const [lead, setLead] = useState<Lead | null>(null)
 
-  const headingRef = useRef<HTMLDivElement>(null)
   const [maxScreenCount, setMaxScreenCount] = useState(0)
+
+  const headingRef = useRef<HTMLDivElement>(null)
 
   const screens = visibleScreens(answers)
   const screen = screens[index]
   const isLast = index === screens.length - 1
 
   useEffect(() => {
+    // The draft check needs localStorage, which isn't available during SSR —
+    // this has to run after mount, not during render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHasDraft(loadDraft() !== null)
   }, [])
 
@@ -50,15 +56,13 @@ export const AssessmentFlow = ({ onClose }: Props) => {
     headingRef.current?.focus()
   }, [stage, index])
 
+  // Only the denominator ratchets — the numerator (current index) is free to
+  // move up and down with Back/Next. maxScreenCount is updated at the point
+  // answers actually change (start/resume/answer below), not derived
+  // reactively here, so a newly triggered branch can grow it but a
+  // back-edit that removes a branch won't make the bar jump backwards.
   const denominator = Math.max(maxScreenCount, screens.length)
   const progress = denominator ? ((index + 1) / denominator) * 100 : 0
-
-  // A newly triggered branch grows the denominator, which would otherwise make
-  // the bar jump backwards. Only the denominator ratchets — the numerator
-  // (current index) is free to move up and down with Back/Next.
-  useEffect(() => {
-    if (screens.length > maxScreenCount) setMaxScreenCount(screens.length)
-  }, [screens.length, maxScreenCount])
 
   const start = () => {
     clearDraft()
@@ -76,7 +80,7 @@ export const AssessmentFlow = ({ onClose }: Props) => {
     const restored = visibleScreens(draft.answers)
     const restoredIndex = screenIndexOf(restored, draft.screenId)
 
-    setMaxScreenCount(0)
+    setMaxScreenCount(restored.length)
     setAnswers(draft.answers)
     setIndex(restoredIndex >= 0 ? restoredIndex : 0)
     setShowErrors(false)
@@ -88,6 +92,8 @@ export const AssessmentFlow = ({ onClose }: Props) => {
     const nextScreens = visibleScreens(next)
     const currentId = screen?.[0]?.id
     const stillThere = currentId ? screenIndexOf(nextScreens, currentId) : -1
+
+    if (nextScreens.length > maxScreenCount) setMaxScreenCount(nextScreens.length)
 
     setAnswers(next)
     saveDraft(next, currentId ?? "")
@@ -111,7 +117,7 @@ export const AssessmentFlow = ({ onClose }: Props) => {
     setShowErrors(false)
   }
 
-  const submit = (captured: Lead) => {
+  const submit = async (captured: Lead) => {
     const submission: AssessmentSubmission = {
       answers: pruneAnswers(answers),
       lead: captured,
@@ -119,6 +125,13 @@ export const AssessmentFlow = ({ onClose }: Props) => {
     }
     // TODO(ADR-003): replace with a real SES or API endpoint send once configured.
     console.log("Assessment Submission:", submission)
+
+    const blueprint = await mockBlueprintService.generate({
+      answers: submission.answers,
+      studentName: captured.name,
+    })
+    saveBlueprint(blueprint)
+
     clearDraft()
     setLead(captured)
     setStage("done")

@@ -121,7 +121,7 @@ export default function FaqPage() {
               Still have questions?
             </h3>
             <p className="mt-2 text-xs text-muted-foreground sm:text-sm max-w-md mx-auto">
-              Can't find the answer you're looking for? Reach out to our team directly and we'll get right back to you.
+              Can&apos;t find the answer you&apos;re looking for? Reach out to our team directly and we&apos;ll get right back to you.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Button

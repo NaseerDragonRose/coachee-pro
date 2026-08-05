@@ -1,10 +1,9 @@
-import { 
-  GraduationCap, 
-  TrendingUp, 
-  Code2, 
-  AlertTriangle, 
-  Compass, 
-  Sparkles,
+import {
+  GraduationCap,
+  TrendingUp,
+  Code2,
+  AlertTriangle,
+  Compass,
   FileText,
   CheckCircle2
 } from "lucide-react"

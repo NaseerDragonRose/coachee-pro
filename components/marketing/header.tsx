@@ -35,8 +35,10 @@ export const Header = () => {
   const { theme, setTheme } = useTheme()
   const { open } = useAssessment()
 
-  // Prevent hydration mismatch for theme icons
   useEffect(() => {
+    // Prevent hydration mismatch for theme icons — mounted state can only be
+    // known client-side, so it has to run after mount, not during render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)

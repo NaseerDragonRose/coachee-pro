@@ -8,8 +8,10 @@ export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
-  // Prevent hydration mismatch by waiting until mounted
   React.useEffect(() => {
+    // Prevent hydration mismatch by waiting until mounted — this can only be
+    // known client-side, so it has to run after mount, not during render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
   }, [])
 

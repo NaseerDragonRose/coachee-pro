@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRight, Sparkles } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 import { CAREERS } from "@/lib/careers"
 import { CareerCard } from "@/components/marketing/career-card"

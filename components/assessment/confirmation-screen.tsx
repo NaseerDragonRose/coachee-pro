@@ -1,13 +1,13 @@
 "use client"
 
-import { MailCheck } from "lucide-react"
+import { CheckCircle2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
 export const ConfirmationScreen = ({ name, onClose }: Props) => (
   <div className="flex flex-col gap-6 text-center">
     <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-300">
-      <MailCheck className="h-6 w-6" />
+      <CheckCircle2 className="h-6 w-6" />
     </div>
 
     <div className="flex flex-col gap-3">
@@ -15,8 +15,9 @@ export const ConfirmationScreen = ({ name, onClose }: Props) => (
         {name ? `Thanks, ${name}!` : "Thanks!"}
       </h2>
       <p className="text-sm text-muted-foreground">
-        We&apos;ve got your answers. A career advisor will look through them and send your
-        up to 3 career matches — with the one we&apos;d back for you — within 24 hours.
+        We&apos;ve got your answers, and matched you to your top tech career paths based on
+        them. We&apos;re putting the finishing touches on how you&apos;ll see the results —
+        check back soon.
       </p>
     </div>
 

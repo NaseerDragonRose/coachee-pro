@@ -13,9 +13,12 @@ export const AssessmentProvider = ({ children }: Props) => {
   const open = useCallback(() => setIsOpen(true), [])
   const close = useCallback(() => setIsOpen(false), [])
 
-  // Campaign links can deep-link straight into the assessment.
   useEffect(() => {
+    // Campaign links can deep-link straight into the assessment. This reads
+    // the URL, which is only reliably available client-side after mount, not
+    // during render.
     if (new URLSearchParams(window.location.search).get("assessment") === "1") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsOpen(true)
     }
   }, [])

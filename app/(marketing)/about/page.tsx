@@ -65,7 +65,7 @@ export default function AboutPage() {
                   The Information Overload
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Students are buried in fragmented advice from YouTube, relatives, and influencers. Questions like <em>"Which stream should I pick?"</em>, <em>"Will AI replace this role?"</em>, and <em>"What will I actually earn?"</em> go unanswered or get mixed responses.
+                  Students are buried in fragmented advice from YouTube, relatives, and influencers. Questions like <em>&ldquo;Which stream should I pick?&rdquo;</em>, <em>&ldquo;Will AI replace this role?&rdquo;</em>, and <em>&ldquo;What will I actually earn?&rdquo;</em> go unanswered or get mixed responses.
                 </p>
               </div>
 
@@ -74,7 +74,7 @@ export default function AboutPage() {
                   Parent Peace of Mind
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Parents aren't looking for vague marketing roadmaps—they want confidence that their family isn't committing years and tuition to the wrong path. CoacheePro provides transparent, reliable guidance both parents and students can trust.
+                  Parents aren&apos;t looking for vague marketing roadmaps—they want confidence that their family isn&apos;t committing years and tuition to the wrong path. CoacheePro provides transparent, reliable guidance both parents and students can trust.
                 </p>
               </div>
             </div>
