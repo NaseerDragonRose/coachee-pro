@@ -30,6 +30,13 @@ Format per decision: requirements, options with pros/cons/cost/exit-strategy, an
 
 **Decision:** Decided (2026-08-05) — AWS Cognito, with a Cognito User Pool federated to Google as the only identity provider for v1 (no native Cognito email/password sign-in yet — that's a separate future decision if needed). Next.js integrates via NextAuth v4 (`next-auth@4.24.15`; v5/"Auth.js" was considered but is still beta-only, and this project only takes stable dependencies) as a thin integration layer — Cognito remains the actual identity provider. Provisioned via a CDK stack (`infra/`), consistent with ADR-002. Sessions are JWT-only; no database was introduced for this (see ADR-005 note below) since nothing in this phase's scope needs to look up a user by ID yet.
 
+**Known limitation (deferred, 2026-08-05):** Users with multiple Google accounts aren't shown Google's account picker on repeat "Log in" clicks — Google silently reuses whichever account is already active in the browser. Root cause: our deployed Cognito Hosted UI is the "classic" mode, which doesn't forward OAuth `prompt` parameters through to federated IdPs. Cognito's newer **Managed Login** branding (GA May 2025) does support this, but switching requires real infra changes, not a config tweak:
+- CDK: `managedLoginVersion: ManagedLoginVersion.NEWER_MANAGED_LOGIN` on the User Pool's `addDomain()`, plus an associated `CfnManagedLoginBranding` resource (L1 construct — no L2 shortcut yet) tied to the User Pool + Client.
+- NextAuth: add `identity_provider: "Google"` and `prompt: "select_account"` to the Cognito provider's `authorization.params` in `services/auth/auth-options.ts`.
+- Redeploying changes the Hosted UI domain's behavior, so this needs a real test pass afterward, not a drive-by change.
+
+Not blocking — sign-in itself works correctly for whichever Google account is active. Pick this up when multi-account support actually matters to users, not before.
+
 ---
 
 ## ADR-002 — Infrastructure as Code
