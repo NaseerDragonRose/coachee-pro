@@ -101,7 +101,7 @@ Not blocking — sign-in itself works correctly for whichever Google account is 
 
 ## ADR-005 — Database hosting
 
-**Status:** Pending — decide before Phase 2 (first persistent user data)
+**Status:** Decided (2026-08-06) — Amazon RDS for PostgreSQL
 
 **Requirements:** Managed PostgreSQL, low idle cost at MVP scale, room to scale without a migration.
 
@@ -115,9 +115,19 @@ Not blocking — sign-in itself works correctly for whichever Google account is 
 - **Cons:** Has a minimum capacity floor (not true scale-to-zero); slightly more moving parts than plain RDS.
 - **Cost:** Can undercut RDS at very low, spiky traffic; converges toward RDS cost as load becomes steady.
 
-**Decision:** TBD before Phase 2. Given MVP traffic will start near zero, Aurora Serverless v2 is worth pricing out against a small RDS instance at implementation time rather than assuming either now.
+**Decision (2026-08-06):** Amazon RDS for PostgreSQL, priced out at implementation time as this ADR required.
 
-**Note (2026-08-05):** ADR-001's Cognito integration deliberately avoided needing this — sessions are JWT-only with no Users table. This ADR is still genuinely pending; it wasn't resolved by the auth work, just not forced by it. It'll actually be needed once a Users table, Blueprint persistence, or payments require server-side storage.
+The deciding factor is that Aurora Serverless v2 is not scale-to-zero: it bills a minimum capacity floor (0.5 ACU) around the clock, which at MVP-idle traffic works out to roughly 3× the cost of the smallest RDS instance class — before storage and I/O. RDS is also the cheaper build: standard managed Postgres with mature CDK L2 constructs (`DatabaseInstance`) and one mental model, versus Aurora's cluster + serverless scaling configuration.
+
+This reverses the "Aurora is worth pricing out" lean written above, which assumed spiky-low traffic could undercut a fixed instance. That only holds once traffic is high enough to clear Aurora's floor often enough that RDS would otherwise need a larger instance — not true at launch.
+
+**Exit strategy:** Both are PostgreSQL behind Prisma, so moving to Aurora later is a data migration and a connection-string change, not a schema or application rewrite. Revisit if sustained load makes a fixed instance the more expensive option.
+
+**Note (2026-08-05):** ADR-001's Cognito integration deliberately avoided needing this — sessions are JWT-only with no Users table. It wasn't resolved by the auth work, just not forced by it.
+
+**Implemented (2026-08-06):** `prisma/schema.prisma` created with the subset of tables the product needs today (`users`, `assessments`, `blueprints`, `career_matches`), on Prisma 7, and migration `20260806091830_init` applied to a local **PostgreSQL 17** Docker container. The RDS instance must match that major version. No RDS instance is provisioned yet and no application code queries the database — the CDK stack is the next step. See `reference/DATABASE_DECISIONS.md` for the local setup and schema rationale.
+
+**Follow-on decision still open:** how developers reach dev/prod RDS. Prod should not be publicly accessible, so the choice is SSM Session Manager port forwarding (no bastion, no inbound ports) vs. an SSH bastion host. Decide when the CDK stack is written, since it shapes the networking.
 
 ---
 

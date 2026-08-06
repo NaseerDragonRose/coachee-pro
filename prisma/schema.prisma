@@ -1,0 +1,78 @@
+// Rationale, JSONB shapes, deferred models and open questions:
+// reference/DATABASE_DECISIONS.md
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  assessments Assessment[]
+  blueprints  Blueprint[]
+
+  @@map("users")
+}
+
+model Assessment {
+  id          String   @id @default(uuid(7))
+  userId      String?  @map("user_id")
+  completedAt DateTime @default(now()) @map("completed_at")
+
+  questionnaire      Json
+  lead               Json
+  questionSetVersion String @map("question_set_version")
+  leadEmail          String @map("lead_email")
+
+  user       User?       @relation(fields: [userId], references: [id])
+  blueprints Blueprint[]
+
+  @@index([userId])
+  @@index([leadEmail])
+  @@map("assessments")
+}
+
+model Blueprint {
+  id             String @id @default(uuid(7))
+  userId         String @map("user_id")
+  assessmentId   String @map("assessment_id")
+  contentVersion Int    @default(1) @map("content_version")
+
+  profileSummary Json @map("profile_summary")
+
+  paidAt    DateTime? @map("paid_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  user       User          @relation(fields: [userId], references: [id])
+  assessment Assessment    @relation(fields: [assessmentId], references: [id])
+  careers    CareerMatch[]
+
+  @@index([userId])
+  @@map("blueprints")
+}
+
+model CareerMatch {
+  id            String  @id @default(uuid(7))
+  blueprintId   String  @map("blueprint_id")
+  careerId      String  @map("career_id")
+  matchPercent  Int     @map("match_percent")
+  isRecommended Boolean @default(false) @map("is_recommended")
+
+  content  Json
+  metadata Json?
+
+  blueprint Blueprint @relation(fields: [blueprintId], references: [id])
+
+  @@unique([blueprintId, careerId])
+  @@index([careerId])
+  @@map("career_matches")
+}

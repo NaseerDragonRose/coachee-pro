@@ -35,7 +35,7 @@ Supporting services: OpenAI (behind an internal AI service interface), Razorpay,
 | Backend | Next.js API routes | Confirmed for MVP | No separate backend service needed until load/complexity demands it; can extract to NestJS or a Lambda-based service later without changing the frontend |
 | Auth | AWS Cognito + NextAuth v4 | Confirmed | See ADR-001 — Google federation only in v1, JWT sessions, no database |
 | Database | PostgreSQL | Confirmed | Relational data (users, assessments, blueprints, bookings, payments) fits relational modeling; never revisit this |
-| DB hosting | RDS vs. Aurora Serverless vs. self-managed | **Pending** | See ADR-005 |
+| DB hosting | Amazon RDS for PostgreSQL | Confirmed — ADR-005 | Aurora Serverless v2's 0.5 ACU floor costs ~3× a small RDS instance at MVP-idle traffic, and RDS is the simpler CDK build |
 | ORM | Prisma | Confirmed | Type-safe schema evolution, database-agnostic if we ever needed to move off Postgres (we won't, but keeps the option) |
 | File storage | Amazon S3 | Confirmed | Reports/PDFs/images, accessed via an internal storage interface (not direct SDK calls from business logic) |
 | Payments | Razorpay | Confirmed | Best fit for India-first launch; Stripe considered later for international |

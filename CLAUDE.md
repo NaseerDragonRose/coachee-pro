@@ -32,6 +32,7 @@ This repo stays minimal, adding each `.claude/` piece only when there's real con
 | `/reference/PRODUCT.md` | Vision, target users, MVP scope, what's explicitly out of scope, product flow, phased roadmap |
 | `/reference/ARCHITECTURE.md` | Tech stack, database design, folder structure, module boundaries, security baseline |
 | `/reference/ADRS.md` | Pending technology decisions (auth, IaC, email, analytics, DB hosting) with pros/cons/cost — check before touching any Pending area |
+| `/reference/DATABASE_DECISIONS.md` | Why `prisma/schema.prisma` looks the way it does — table scope, JSONB shapes, deferred models, open questions. The schema file itself stays comment-free |
 
 ## Current status
 
@@ -44,7 +45,7 @@ Phase 1 (marketing website) is underway. The Next.js scaffold is live with dark/
 | Frontend | Next.js (TypeScript) + Tailwind + shadcn/ui | Confirmed |
 | Hosting | AWS Amplify | Confirmed |
 | Auth | AWS Cognito + NextAuth v4 | Confirmed — ADR-001 |
-| Database | PostgreSQL | Confirmed (hosting choice pending — ADR-005) |
+| Database | PostgreSQL on Amazon RDS | Confirmed — ADR-005 |
 | ORM | Prisma | Confirmed |
 | File storage | Amazon S3 | Confirmed |
 | Payments | Razorpay | Confirmed |
