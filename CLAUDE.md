@@ -13,7 +13,7 @@
 
 ## Repo structure conventions
 
-This repo stays minimal, adding each `.claude/` piece only when there's real content for it, not as empty placeholders. So far that's `CLAUDE.md`, `CLAUDE.local.md` (gitignored, personal overrides), `.gitignore`, `/reference`, and `.claude/rules/` (`component-conventions.md` — hand-written component shape; `ui-conventions.md` — mobile-first, accessibility, and theming rules for all UI). The rest of the fuller Claude Code project layout — `commands/`, `skills/`, `agents/`, `hooks/`, `memory/`, `workflows/`, `mcp.json`, `AGENTS.md` — is still **not** scaffolded:
+This repo stays minimal, adding each `.claude/` piece only when there's real content for it, not as empty placeholders. So far that's `CLAUDE.md`, `CLAUDE.local.md` (gitignored, personal overrides), `.gitignore`, `/reference`, and `.claude/rules/` (`component-conventions.md` — hand-written component shape; `ui-conventions.md` — mobile-first, accessibility, theming, and the card/button/interaction reference for all UI). The rest of the fuller Claude Code project layout — `commands/`, `skills/`, `agents/`, `hooks/`, `memory/`, `workflows/`, `mcp.json`, `AGENTS.md` — is still **not** scaffolded:
 
 | Add when... | Piece |
 | --- | --- |
@@ -36,7 +36,13 @@ This repo stays minimal, adding each `.claude/` piece only when there's real con
 
 ## Current status
 
-Phase 1 (marketing website) is underway. The Next.js scaffold is live with dark/light theming (`next-themes`) and smooth scroll (Lenis); Home, About, Technology Careers, Contact, FAQ, Privacy, and Terms pages are built and styled. The free career assessment opens as a modal from every marketing CTA (18 questions with conditional branching, client-side only); submissions are logged, not delivered, until ADR-003 is wired. See `/reference/PRODUCT.md` roadmap section for the full Phase 1 page list and what's still outstanding. A mock AI blueprint-generation service produces a full career-match data contract (`lib/blueprint/`, `services/ai/mock/`) after the assessment completes, and Google sign-in via Cognito (`services/auth/`, `infra/`) is required immediately after — the assessment flow's `signup` stage, before the confirmation screen.
+Phase 1 (marketing website) is underway. The Next.js scaffold is live with dark/light theming (`next-themes`) and smooth scroll (Lenis); Home, About, Technology Careers, Contact, FAQ, Privacy, and Terms pages are built and styled. Submissions are stored but not emailed, until ADR-003 is wired. See `/reference/PRODUCT.md` roadmap section for the full Phase 1 page list and what's still outstanding.
+
+**Sign-in comes before the assessment.** Marketing is the unauthenticated half of the site — `proxy.ts` redirects any signed-in visitor to `/assessments` (except `/privacy` and `/terms`), and marketing CTAs open a Google sign-in dialog rather than the questionnaire. The `signIn` callback creates the user from the Google profile, so the account is complete on arrival; a **dismissible** prompt then asks for phone and contact consent, which Google can't supply. It is a nudge, never a gate — nothing in the app is blocked on it, and `users.phone` / `users.consented_at` stay null until a student chooses to fill them in. The 18-question assessment then runs as a modal on `/assessments`, autosaving to PostgreSQL so it resumes on any device. A mock AI service (`lib/blueprint/`, `services/ai/mock/`) generates the blueprint server-side from the stored snapshot.
+
+Three rules from that design are easy to break by accident: **the assessment modal's step must never appear in the URL** (deliberate deviation from deep-linking guidance); **the row is created on the first answer, not when the modal opens**, so opening and closing costs nothing; and **discarding deletes** — there is no archived state, and `DRAFT`/`COMPLETED` being the only two is what lets every read path skip a status filter.
+
+`app/actions/assessment.ts` and `app/actions/profile.ts` hold the server actions, backed by `services/user/`, `services/assessment/` and `services/blueprint/`. Components never query — they call a server action, which composes services, which alone import `services/db/prisma.ts`. Read `/reference/DATABASE_DECISIONS.md` before changing anything that touches a JSONB column; those shapes are contracts.
 
 ## Tech stack at a glance
 

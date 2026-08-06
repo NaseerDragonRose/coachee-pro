@@ -2,12 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react"
 
-import { isBlueprintPaid, loadBlueprint, setBlueprintPaid } from "@/lib/blueprint/storage"
+import { isBlueprintPaid, setBlueprintPaid } from "@/lib/blueprint/storage"
 import type { Blueprint } from "@/lib/blueprint/types"
 
 import { CareerDetailCard } from "./career-detail-card"
 import { CareerTabs } from "./career-tabs"
-import { EmptyState } from "./empty-state"
 import { PathsToAvoidCard } from "./paths-to-avoid-card"
 import { ProfileHeader } from "./profile-header"
 import { RoadmapTimelineCard } from "./roadmap-timeline-card"
@@ -17,23 +16,18 @@ import { SmartMoneyRouteCard } from "./smart-money-route-card"
 import { StrengthsCard } from "./strengths-card"
 import { WatchOutsCard } from "./watch-outs-card"
 
-export const DashboardView = () => {
-  const [mounted, setMounted] = useState(false)
-  const [blueprint, setBlueprint] = useState<Blueprint | null>(null)
-  const [isPaid, setIsPaid] = useState(false)
-  const [selectedCareerId, setSelectedCareerId] = useState<string | null>(null)
+const defaultCareerId = (blueprint: Blueprint): string | null =>
+  blueprint.careers.find((career) => career.isRecommended)?.careerId ?? blueprint.careers[0]?.careerId ?? null
+
+export const DashboardView = ({ blueprint, paidAt }: Props) => {
+  const [isPaid, setIsPaid] = useState(paidAt !== null)
+  const [selectedCareerId, setSelectedCareerId] = useState<string | null>(defaultCareerId(blueprint))
 
   useEffect(() => {
-    // Blueprint and paid status live in localStorage, which isn't available
-    // during SSR — this has to run after mount, not during render.
-    const loaded = loadBlueprint()
+    // The premium unlock is still mocked in localStorage while Razorpay is
+    // deferred, so a real paid_at and the mock flag both count as paid.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setBlueprint(loaded)
-    setIsPaid(isBlueprintPaid())
-    setSelectedCareerId(
-      loaded?.careers.find((career) => career.isRecommended)?.careerId ?? loaded?.careers[0]?.careerId ?? null
-    )
-    setMounted(true)
+    if (isBlueprintPaid()) setIsPaid(true)
   }, [])
 
   const unlock = () => {
@@ -47,19 +41,9 @@ export const DashboardView = () => {
   }
 
   const selectedCareer = useMemo(
-    () => blueprint?.careers.find((career) => career.careerId === selectedCareerId) ?? null,
+    () => blueprint.careers.find((career) => career.careerId === selectedCareerId) ?? null,
     [blueprint, selectedCareerId]
   )
-
-  if (!mounted) return null
-
-  if (!blueprint) {
-    return (
-      <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-        <EmptyState />
-      </div>
-    )
-  }
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-10 sm:px-6">
@@ -116,4 +100,10 @@ export const DashboardView = () => {
       )}
     </div>
   )
+}
+
+type Props = {
+  blueprint: Blueprint
+  /** Set once the blueprint is paid for; the mock unlock still lives locally. */
+  paidAt: string | null
 }

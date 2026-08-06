@@ -1,8 +1,13 @@
+-- CreateEnum
+CREATE TYPE "AssessmentStatus" AS ENUM ('DRAFT', 'COMPLETED');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "phone" TEXT,
+    "consented_at" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
@@ -11,12 +16,14 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "assessments" (
     "id" TEXT NOT NULL,
-    "user_id" TEXT,
-    "completed_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "questionnaire" JSONB NOT NULL,
-    "lead" JSONB NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "status" "AssessmentStatus" NOT NULL DEFAULT 'DRAFT',
+    "answers" JSONB NOT NULL,
+    "current_screen_id" TEXT,
+    "questionnaire" JSONB,
     "question_set_version" TEXT NOT NULL,
-    "lead_email" TEXT NOT NULL,
+    "started_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "completed_at" TIMESTAMP(3),
 
     CONSTRAINT "assessments_pkey" PRIMARY KEY ("id")
 );
@@ -52,10 +59,7 @@ CREATE TABLE "career_matches" (
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE INDEX "assessments_user_id_idx" ON "assessments"("user_id");
-
--- CreateIndex
-CREATE INDEX "assessments_lead_email_idx" ON "assessments"("lead_email");
+CREATE INDEX "assessments_user_id_status_idx" ON "assessments"("user_id", "status");
 
 -- CreateIndex
 CREATE INDEX "blueprints_user_id_idx" ON "blueprints"("user_id");
@@ -67,7 +71,7 @@ CREATE INDEX "career_matches_career_id_idx" ON "career_matches"("career_id");
 CREATE UNIQUE INDEX "career_matches_blueprint_id_career_id_key" ON "career_matches"("blueprint_id", "career_id");
 
 -- AddForeignKey
-ALTER TABLE "assessments" ADD CONSTRAINT "assessments_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "assessments" ADD CONSTRAINT "assessments_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "blueprints" ADD CONSTRAINT "blueprints_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -79,6 +83,18 @@ ALTER TABLE "blueprints" ADD CONSTRAINT "blueprints_assessment_id_fkey" FOREIGN 
 ALTER TABLE "career_matches" ADD CONSTRAINT "career_matches_blueprint_id_fkey" FOREIGN KEY ("blueprint_id") REFERENCES "blueprints"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- Constraints Prisma can't express — see reference/DATABASE_DECISIONS.md
+--
+-- These are hand-written and will NOT be reproduced if this migration is ever
+-- regenerated or squashed from the schema — Prisma can't express any of them.
+-- Carry all three across by hand and verify against pg_indexes and
+-- pg_constraint; nothing fails loudly when they go missing.
+
+-- At most one active draft per user. createDraft() also clears the previous
+-- draft inside the same transaction that inserts the new one; this index is
+-- the guarantee that survives two concurrent calls, that transaction is the
+-- behaviour.
+CREATE UNIQUE INDEX "assessments_one_active_draft"
+  ON "assessments" ("user_id") WHERE "status" = 'DRAFT';
 
 -- PRODUCT.md promises exactly one recommended career per blueprint.
 CREATE UNIQUE INDEX "career_matches_one_recommended"

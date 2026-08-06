@@ -56,7 +56,7 @@ Profiles
   id, user_id, type (student | parent)
     ↓
 Assessments
-  id, user_id, status, started_at, completed_at
+  id, user_id, status (draft|completed|discarded), started_at, completed_at
     ↓
 Assessment Responses
   id, assessment_id, question_id, answer
@@ -83,12 +83,14 @@ coachee-pro/
 ├── CLAUDE.md                 # always-loaded engineering context and principles
 ├── reference/                # detailed product & architecture docs
 ├── app/
-│   ├── (marketing)/         # Home, About, Blog, Career Blueprint landing, etc. — no auth required
+│   ├── (marketing)/         # Home, About, Career Blueprint landing, etc. — no auth required
 │   ├── (app)/                # Assessment, Blueprint, Dashboard — auth required (Phase 2+)
-│   └── (admin)/              # Admin portal (Phase 6)
+│   ├── (admin)/              # Admin portal (Phase 6)
+│   ├── actions/              # server actions — the client's only entry into services/
+│   └── api/                  # route handlers (NextAuth)
 ├── components/
-├── lib/                      # shared utilities
-├── services/                 # internal service interfaces: auth, ai, storage, payment, email
+├── lib/                      # shared pure logic: types, questions, flow helpers — no vendor SDKs
+├── services/                 # internal service interfaces: auth, ai, db, user, assessment, blueprint
 ├── prisma/                   # schema + migrations
 ├── public/
 └── types/
@@ -101,6 +103,24 @@ Auth Module → Assessment Module → AI Module → Payment Module → Booking M
 ```
 
 Each module is independent and talks to external vendors only through its own interface (e.g. `services/storage` wraps S3, `services/ai` wraps OpenAI). Swapping a vendor later means changing one module, not chasing SDK calls scattered across the app.
+
+The same rule applies inwards to the database. `services/db/prisma.ts` is the only construction site for the Prisma client, and only other `services/` modules import it — `services/assessment` and `services/blueprint` own their own queries behind plain interfaces. Components never query; they call a server action in `app/actions/`, which composes services. That keeps the vendor at one edge and makes a server action the single place authorization is checked.
+
+A server action is a public HTTP endpoint, so every one of them validates its input server-side even when a form already validated it in the browser. Shared schemas (`lib/assessment/schema.ts`) keep the two from drifting.
+
+## Auth routing
+
+Marketing is the unauthenticated half of the site; the app is the authenticated half. `proxy.ts` (Next 16 renamed the `middleware` convention) decides which a request belongs to before a page renders: anonymous visitors to `/assessments*` are sent home, and signed-in visitors to any marketing page are sent to their assessments. Sessions are JWT-only (ADR-001), so this is a cookie decode with no database round trip.
+
+`/privacy` and `/terms` are exempt in both directions. The profile prompt's consent checkbox links to `/privacy`, and bouncing a student away from the policy they're being asked to agree to would be wrong.
+
+It is the redirect layer, **not** the security boundary. `app/(app)/layout.tsx` still checks the session server-side, because the proxy protects by URL pattern and a matcher that stops matching is a silent failure — that layout is what actually guarantees no signed-in-only markup is produced.
+
+**No URL anywhere carries flow state.** The assessment modal's step lives only in React state, so closing and reopening resumes in place without the address bar ever changing. This is a deliberate deviation from the usual "deep-link stateful UI" guidance: the modal is a single task with a saved server-side position, not a set of addressable views, and a step in the URL would invite a student to land mid-assessment on a screen whose branch conditions were never evaluated.
+
+### Sign-in creates the user
+
+A `signIn` callback in `services/auth/auth-options.ts` upserts the `User` row on the Cognito `sub`. Nothing else creates it, and both `assessments` and `blueprints` have a foreign key to it. Sessions stay JWT-only — this is a write on sign-in, not a database session adapter.
 
 ## Security (MVP baseline)
 

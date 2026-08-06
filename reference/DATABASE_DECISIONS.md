@@ -32,15 +32,44 @@ Designs for the deferred models are at the bottom of this doc.
 
 Student/Parent/Mentor/Admin access control reads from Cognito Groups in the JWT. Duplicating it in Postgres creates a second source of truth that will drift from the one that actually gates access. Sessions stay JWT-only (ADR-001); this table exists to *own* data, not to authenticate.
 
-### Assessments are written once, at submission
+### An assessment is a row from its first *answer*
 
-There is no DB row for an in-progress assessment, which is why there's no `status` or `started_at`. Drafts stay in localStorage (`lib/assessment/storage.ts`), exactly as they work today. The row is created when the lead is captured and the assessment is complete.
+Sign-in comes *before* the questionnaire (see `ARCHITECTURE.md`, "Auth routing"), so a `User` always exists by the time an assessment starts. `assessments.user_id` is therefore NOT NULL and an in-progress assessment is a real row with `status = DRAFT`, `started_at`, and a live `answers` map that autosaves roughly every second.
 
-### `assessments.user_id` is nullable
+**The row is created by the first autosave that has something to save, not by opening the modal.** A student who opens the assessment and closes it again leaves nothing behind — otherwise every idle click would cost a row, and `started_at` would record curiosity rather than intent. `ensureAssessmentId()` in `assessment-provider.tsx` creates it on demand and guards re-entry with a ref, since the autosave timer and Finish can both reach it and two `startAssessment()` calls would race for the one draft slot.
 
-The real flow is assessment → blueprint → *then* Cognito signup, so a completed assessment exists before its `User` does.
+That is what makes "pause and come back" true on a different device, and it is where `/assessments` gets the status and started-at it shows.
 
-**Link by passing `assessmentId` explicitly through the signup redirect** — not by matching `lead_email` alone. Email matching is spoofable: anyone can type a stranger's address into the lead form, and that person would later inherit an assessment (and potentially a paid blueprint) that isn't theirs. Cognito verifies the Google email so this isn't account takeover, but it is data contamination on a paid artifact. `lead_email` is indexed as a fallback and for support lookups.
+**The alternative was to let the assessment run anonymously and link it to the account afterwards**, so the login wall sits after the questions instead of before them. It's the better funnel, and it was rejected anyway: it needs a nullable `user_id`, an atomic claim guarded by `WHERE user_id IS NULL`, an assessment id carried across the OAuth redirect in `localStorage`, and a marketing URL that stays reachable while authenticated — and it still can't resume on a second device, which is the thing students actually need. Requiring sign-in first removes all of that machinery rather than managing it.
+
+### `answers` and `questionnaire` are separate columns
+
+`answers` is the live map, rewritten on every autosave. `questionnaire` is the presentation snapshot, written once at completion and never again.
+
+They are not merged because `questionnaire IS NULL` is exactly equivalent to "not completed". A single column would force a draft to carry a half-built snapshot that a later reader could mistake for a finished one.
+
+### Discarding deletes
+
+`discard()` is a `deleteMany`, filtered to `status = DRAFT` so it can never take a completed assessment (and its blueprint) with it. There is no `DISCARDED` state.
+
+Archiving to a `DISCARDED` state is the obvious alternative, on the theory that abandoned attempts are worth keeping for drop-off analysis. Three things argue against it:
+
+- **The storage saving is not the reason.** An assessment row is a few KB; even a hundred thousand of them is noise against an RDS bill. Anyone justifying this on cost is solving the wrong problem.
+- **Funnel analysis belongs in the analytics tool, not the transactional database.** Which question loses students is a product question, and ADR-004 is where it gets answered. Keeping dead rows in Postgres is a worse version of that, permanently.
+- **A student who discards expects it gone.** Retaining it silently is exactly the kind of thing DPDP's erasure right is about, and "we kept it for analytics" is a weak defence for data nobody is analysing yet.
+
+The practical payoff is that `DRAFT` and `COMPLETED` are now the only states, so no read path needs a status filter — every row that exists is one the student should see. A filter that's easy to forget is a filter that eventually leaks someone's discarded answers into a list.
+
+### At most one active draft per user
+
+Enforced by a partial unique index that Prisma cannot express, declared by hand in the migration (see "Constraints Prisma can't express" below — it is one of three that a regenerated migration would silently drop):
+
+```sql
+CREATE UNIQUE INDEX assessments_one_active_draft
+  ON assessments (user_id) WHERE status = 'DRAFT';
+```
+
+`createDraft()` also archives any existing draft inside the same transaction that inserts the new one. The index is the guarantee that survives two concurrent calls; the transaction is the behaviour. Both are needed — neither subsumes the other.
 
 ### `questionnaire` is a snapshot, not an answer map
 
@@ -109,9 +138,19 @@ One entry per answered question, in presentation order:
 }]
 ```
 
-### `assessments.lead`
+Built by `toQuestionnaire()` in `lib/assessment/questionnaire.ts`, which walks the *visible* questions in presentation order — so unreachable branches and unanswered optionals are absent, and a key that doesn't match a real question can never reach the column.
 
-Mirrors `Lead` in `lib/assessment/types.ts`: `name`, `email`, `phone`, `consent`. `lead_email` is denormalized off `lead.email` so signup linking and support lookups use an index instead of querying into JSONB — `lead` stays authoritative.
+`raw` is what the flow held (option ids, text, or a number); `labels` is the same value rendered readably, which is what makes the snapshot useful without the question set beside it. An option id with no matching option — possible from a resumed draft after the set changed — keeps the id as its own label rather than dropping the answer.
+
+**`scale` questions also carry a `scale` object** (`min`, `max`, `minLabel`, `maxLabel`). This is an addition to the shape sketched above, where scales had neither `options` nor anything else. Without it a stored `4` is meaningless: the endpoints ("Never tried it" → "I build my own projects") are the entire content of a scale question, and they're exactly as mutable as an option label.
+
+### `assessments.answers`
+
+A flat `Record<questionId, AnswerValue>` — the same shape the flow holds in memory. Deliberately *not* a snapshot: it is working state, replaced wholesale on each autosave, and it stops being read the moment `questionnaire` is written.
+
+There is no `lead` column. Name and email come from Google at sign-in and live on `users`.
+
+`users.phone` and `users.consented_at` are both nullable and **expected to stay null for many accounts**: they're asked for by a dismissible prompt, not a gate. Anything that later needs a phone number or contact consent — SES email, a mentor callback — has to treat absence as the normal case and check before sending, not assume the column is populated. This is also why consent can't be inferred from the existence of a user row.
 
 ### `blueprints.profile_summary`
 
@@ -119,13 +158,26 @@ Mirrors `ProfileSummary` in `lib/blueprint/types.ts`: `archetype`, `narrative`, 
 
 ### `career_matches.content`
 
-Mirrors the narrative half of `CareerMatch` in `lib/blueprint/types.ts`: `aiRisk`, `streamFit`, `whyItFits`, `dayInTheLife`, `skillsToBuild`, `learningPath`, `collegeGuidance`, `salaryProgressionInrLakh`, `futureOutlook`, `commonMistakes`.
+Mirrors the narrative half of `CareerMatch` in `lib/blueprint/types.ts`: `aiRisk`, `streamFit`, `whyItFits`, `dayInTheLife`, `skillsToBuild`, `learningPath`, `collegeGuidance`, `salaryProgressionInrLakh`, `futureOutlook`, `commonMistakes` — **and `name`**.
+
+`name` wasn't in that list originally, on the reasoning that a display name should be renameable (see "career_id is a natural key" above). It's stored anyway, because resolving it live is worse on both counts: reading a blueprint would have to reach into `services/ai/mock/career-catalog.ts` from the persistence layer, and a delivered paid artifact would silently change wording under the student who bought it. Snapshotting it is the same argument already made for `ai_risk`. The rename policy still holds for the *id*, which is what the hazard was actually about; a rename that must reach historical blueprints is a data migration, and that's the honest cost.
+
+`content` is written as a subtraction (`Omit<CareerMatch, "careerId" | "matchPercent" | "isRecommended">`) rather than a field list, so a field added to `CareerMatch` is stored automatically instead of being silently dropped.
+
+**Key order is not preserved.** Postgres `jsonb` sorts object keys by length, then bytewise — so a round-tripped `learningPath` comes back with its keys reordered. Values are unaffected; only byte-for-byte JSON comparison of a stored blueprint is meaningless.
 
 ## Constraints Prisma can't express
 
-Append these by hand to the migration that creates these tables:
+**All three of these live only in hand-written SQL.** They are invisible to `schema.prisma`, so nothing regenerates them — a squashed or rebuilt migration drops them silently and the application keeps compiling. Carry them across by hand, then verify against `pg_indexes` and `pg_constraint` rather than trusting that the migration applied.
 
 ```sql
+-- At most one active draft per user. createDraft() also clears the previous
+-- draft inside the same transaction that inserts the new one; this index is
+-- the guarantee that survives two concurrent calls, that transaction is the
+-- behaviour.
+CREATE UNIQUE INDEX assessments_one_active_draft
+  ON assessments (user_id) WHERE status = 'DRAFT';
+
 -- PRODUCT.md promises exactly one recommended career per blueprint.
 CREATE UNIQUE INDEX career_matches_one_recommended
   ON career_matches (blueprint_id) WHERE is_recommended;
@@ -137,11 +189,21 @@ ALTER TABLE career_matches
 
 ## Open questions
 
-Neither is resolved, and both are decisions rather than code.
+None of these is resolved, and all are decisions rather than code.
+
+### A Cognito `sub` that changes under a stable email
+
+`users.id` is the Cognito `sub` and `users.email` is `@unique`, so one person can only ever hold one row — correct, and the constraint should stay. But it means a *new* `sub` arriving for an *existing* email fails the upsert on the unique index.
+
+**The upsert runs in the `signIn` callback** (`services/auth/auth-options.ts`), so this fails the sign-in outright. That is the safe direction — silently merging two accounts is unrecoverable, a refused sign-in is not — but it is a user-facing lockout with no self-service fix, and it surfaces at the least convenient moment.
+
+This isn't hypothetical: rebuilding the user pool reissues subs for the same Google accounts, which is exactly what happened while `infra/` was being iterated on. Recovering means deciding whether to re-point the old row's id at the new `sub` (a cascade across `assessments` and `blueprints`) or to treat it as a genuinely new account. Worth answering before the pool is ever recreated with real users in it.
 
 ### Deletion policy
 
-No `onDelete` is set on any relation, so Prisma defaults apply — the generated DDL gives `assessments.user_id` `ON DELETE SET NULL` and everything else `RESTRICT`. Under DPDP right-to-erasure this needs a deliberate answer, and cascade-delete is probably the wrong one: financial records generally must outlive a deletion request. Likely shape is anonymize-in-place (null the FK, strip `lead`, keep the row). **Decide before payments land.**
+No `onDelete` is set on any relation, so Prisma defaults apply — `RESTRICT` throughout, since every FK is non-nullable and none can be set null. Under DPDP right-to-erasure this needs a deliberate answer, and cascade-delete is probably the wrong one: financial records generally must outlive a deletion request. Likely shape is anonymize-in-place (scrub the identifying columns on `users`, keep the rows).
+
+Note this is a *different* question from `DISCARDED`. Archiving a discarded assessment is a product behaviour and says nothing about how long the row may be retained once its owner asks to be forgotten. **Decide before payments land.**
 
 ### Minors' data
 
@@ -194,11 +256,31 @@ pgAdmin connects on `localhost:5432` (or `host.docker.internal:5432` if pgAdmin 
 
 ## Current state
 
-The initial migration `20260806091830_init` is written and applied to the local PostgreSQL 17 container — four tables plus the two hand-appended constraints, all verified present. The client is generated to `lib/generated/prisma`.
+A single migration — `20260806170554_init` — builds the whole schema on the local PostgreSQL 17 container. The client is generated to `lib/generated/prisma`, and the singleton lives at `services/db/prisma.ts` (see below).
 
-`@prisma/adapter-pg` is installed and a client built on it connects and queries the local database successfully. The singleton lives at `services/db/prisma.ts` (see below).
+**If you ever regenerate or squash this migration, it will silently lose SQL.** A migration generated from the schema contains only what Prisma can express, which excludes all three constraints in "Constraints Prisma can't express" below — two partial unique indexes and a `CHECK`. Nothing fails when they go missing: the app compiles, queries run, and the guarantees are simply gone. Carry them across by hand and verify against `pg_indexes` and `pg_constraint` rather than trusting that the migration applied them.
 
-**No application code queries it yet.** The app still runs entirely on `localStorage` and the mock blueprint service. Wiring the existing services to Prisma is the next piece of work.
+**The assessment flow reads and writes the database from its first question.** Three stores sit behind it, each an interface plus a Prisma implementation, so nothing outside `services/` touches the client:
+
+| Module | Owns |
+| --- | --- |
+| `services/user/` | The sign-in upsert, the profile step's write, and reading a user back |
+| `services/assessment/` | The draft lifecycle — create, autosave, discard, complete — and both read paths |
+| `services/blueprint/` | Writing a blueprint with its career matches, and reading one back for a user |
+
+`app/actions/assessment.ts` exposes `startAssessment`, `saveAssessmentDraft`, `discardAssessment` and `completeAssessment`; `app/actions/profile.ts` exposes `completeProfile`. Every one is session-gated and validates its input server-side.
+
+Blueprints are addressed by assessment id: `app/(app)/assessments/` lists them and `app/(app)/assessments/[id]/` is the canonical view. Both are server components, and both fold `userId` into the `WHERE` rather than checking it afterwards, so another student's blueprint and a nonexistent one are indistinguishable from outside.
+
+The list now shows a real status and start time, because a draft is a real row. An in-progress assessment renders as its own card with a `Question N of M` counter derived on the server via `progressOf()`; completed assessments keep the paid/free split.
+
+`listForUser` never selects `questionnaire` — it's the largest column in the schema and worthless in a list. It does select `answers` for drafts, which is what lets the page seed the resume modal without a second query, and it reads `content.name` for the recommended career, the concrete payoff of storing `name` in `content`.
+
+Verified against the local database by exercising the real stores through a temporary route: draft creation, autosave, the archive-on-restart transaction, ownership filtering on both reads and writes (a stranger's id returns null and a stranger's save is a no-op), idempotent discard, the double-submit guard on completion, `studentName` resolving through the user relation, and recommended-first career ordering surviving the round trip.
+
+**Still on `localStorage`:** only the mock premium unlock, and the dismissal flag for the profile prompt. Everything else about an assessment lives in Postgres — the in-progress draft included, which is what makes it resumable on another device. `paid_at` is read as authoritative when set, but nothing writes it until Razorpay lands.
+
+**Not wired:** no RDS instance is provisioned, and submissions still aren't emailed (ADR-003).
 
 ## The client singleton
 

@@ -1,66 +1,47 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react"
 
+import { completeAssessment, saveAssessmentDraft } from "@/app/actions/assessment"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { isScreenComplete, pruneAnswers, screenIndexOf, visibleScreens } from "@/lib/assessment/flow"
-import { clearDraft, loadDraft, saveDraft } from "@/lib/assessment/storage"
-import type { AnswerValue, Answers, AssessmentSubmission, Lead } from "@/lib/assessment/types"
-import { saveBlueprint } from "@/lib/blueprint/storage"
-import { mockBlueprintService } from "@/services/ai/mock-blueprint-service"
+import {
+  hasContent,
+  isScreenComplete,
+  screenIndexOf,
+  visibleScreens,
+} from "@/lib/assessment/flow"
+import type { AnswerValue } from "@/lib/assessment/types"
 
-import { LeadCaptureForm } from "./lead-capture-form"
 import { QuestionScreen } from "./question-screen"
-import { SignupScreen } from "./signup-screen"
-import { TeaserScreen } from "./teaser-screen"
 import { useAssessment } from "./assessment-provider"
 import { WelcomeScreen } from "./welcome-screen"
 
-export type Stage = "welcome" | "questions" | "teaser" | "capture" | "signup"
-
-const hasContent = (value: AnswerValue | undefined): boolean => {
-  if (value === undefined) return false
-  if (typeof value === "string") return value.trim().length > 0
-  if (Array.isArray(value)) return value.length > 0
-  return true
-}
-
 export const AssessmentFlow = () => {
-  const [stage, setStage] = useState<Stage>("welcome")
-  const [answers, setAnswers] = useState<Answers>({})
-  const [index, setIndex] = useState(0)
-  const [showErrors, setShowErrors] = useState(false)
-  const [hasDraft, setHasDraft] = useState(false)
+  const {
+    ensureAssessmentId,
+    stage,
+    setStage,
+    answers,
+    setAnswers,
+    index,
+    setIndex,
+    close,
+    finish,
+  } = useAssessment()
 
+  const [showErrors, setShowErrors] = useState(false)
   const [maxScreenCount, setMaxScreenCount] = useState(0)
+  const [failed, setFailed] = useState(false)
 
   const headingRef = useRef<HTMLDivElement>(null)
-
-  const { initialStage, consumeInitialStage } = useAssessment()
-
-  useEffect(() => {
-    // The post-signup OAuth redirect lands the browser back here with no
-    // in-memory stage — assessment-provider.tsx figures out where to
-    // resume (done vs. signup) and hands it over via context; this effect
-    // applies it once, then clears it so a later open() starts fresh.
-    if (!initialStage) return
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setStage(initialStage)
-    consumeInitialStage()
-  }, [initialStage, consumeInitialStage])
+  const router = useRouter()
 
   const screens = visibleScreens(answers)
   const screen = screens[index]
   const isLast = index === screens.length - 1
-
-  useEffect(() => {
-    // The draft check needs localStorage, which isn't available during SSR —
-    // this has to run after mount, not during render.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setHasDraft(loadDraft() !== null)
-  }, [])
 
   // Move focus to the top of each new screen/stage so screen readers and
   // keyboard users land on the new content rather than staying on a button
@@ -71,31 +52,14 @@ export const AssessmentFlow = () => {
 
   // Only the denominator ratchets — the numerator (current index) is free to
   // move up and down with Back/Next. maxScreenCount is updated at the point
-  // answers actually change (start/resume/answer below), not derived
-  // reactively here, so a newly triggered branch can grow it but a
-  // back-edit that removes a branch won't make the bar jump backwards.
+  // answers actually change (start/answer below), not derived reactively here,
+  // so a newly triggered branch can grow it but a back-edit that removes a
+  // branch won't make the bar jump backwards.
   const denominator = Math.max(maxScreenCount, screens.length)
   const progress = denominator ? ((index + 1) / denominator) * 100 : 0
 
   const start = () => {
-    clearDraft()
-    setMaxScreenCount(0)
-    setAnswers({})
-    setIndex(0)
-    setShowErrors(false)
-    setStage("questions")
-  }
-
-  const resume = () => {
-    const draft = loadDraft()
-    if (!draft) return start()
-
-    const restored = visibleScreens(draft.answers)
-    const restoredIndex = screenIndexOf(restored, draft.screenId)
-
-    setMaxScreenCount(restored.length)
-    setAnswers(draft.answers)
-    setIndex(restoredIndex >= 0 ? restoredIndex : 0)
+    setMaxScreenCount(screens.length)
     setShowErrors(false)
     setStage("questions")
   }
@@ -109,17 +73,47 @@ export const AssessmentFlow = () => {
     if (nextScreens.length > maxScreenCount) setMaxScreenCount(nextScreens.length)
 
     setAnswers(next)
-    saveDraft(next, currentId ?? "")
     // An edit can remove the screen we're standing on only via Back-editing a
     // trigger, in which case clamp rather than run off the end.
     if (stillThere === -1) setIndex((i) => Math.min(i, nextScreens.length - 1))
     setShowErrors(false)
   }
 
+  const submit = async () => {
+    setFailed(false)
+    setStage("generating")
+
+    // Finish can land before the debounced autosave has created the row, so
+    // make sure it exists and carries the final answers before completing.
+    const id = await ensureAssessmentId()
+    if (!id) {
+      setFailed(true)
+      return
+    }
+
+    await saveAssessmentDraft({
+      id,
+      answers,
+      screenId: screens[index]?.[0]?.id ?? null,
+    })
+
+    const result = await completeAssessment(id)
+
+    if (!result.ok) {
+      // Never a dead end — the answers are already saved server-side, so
+      // retrying costs nothing but a tap.
+      setFailed(true)
+      return
+    }
+
+    finish()
+    router.replace(`/assessments/${encodeURIComponent(result.assessmentId)}`)
+  }
+
   const next = () => {
     if (!screen) return
     if (!isScreenComplete(screen, answers)) return setShowErrors(true)
-    if (isLast) return setStage("teaser")
+    if (isLast) return void submit()
     setIndex((i) => i + 1)
     setShowErrors(false)
   }
@@ -130,53 +124,54 @@ export const AssessmentFlow = () => {
     setShowErrors(false)
   }
 
-  const submit = async (captured: Lead) => {
-    const submission: AssessmentSubmission = {
-      answers: pruneAnswers(answers),
-      lead: captured,
-      completedAt: new Date().toISOString(),
-    }
-    // TODO(ADR-003): replace with a real SES or API endpoint send once configured.
-    console.log("Assessment Submission:", submission)
-
-    const blueprint = await mockBlueprintService.generate({
-      answers: submission.answers,
-      studentName: captured.name,
-    })
-    saveBlueprint(blueprint)
-
-    clearDraft()
-    setStage("signup")
-  }
-
   if (stage === "welcome") {
     return (
-      <div ref={headingRef} tabIndex={-1} className="overflow-y-auto px-5 py-6 outline-none" data-lenis-prevent>
-        <WelcomeScreen hasDraft={hasDraft} onStart={start} onResume={resume} />
+      <div ref={headingRef} tabIndex={-1} className="overflow-y-auto overscroll-contain px-5 py-6 outline-none" data-lenis-prevent>
+        <WelcomeScreen onStart={start} />
       </div>
     )
   }
 
-  if (stage === "teaser") {
+  if (stage === "generating") {
     return (
-      <div ref={headingRef} tabIndex={-1} className="overflow-y-auto px-5 py-6 outline-none" data-lenis-prevent>
-        <TeaserScreen onContinue={() => setStage("capture")} />
-      </div>
-    )
-  }
-
-  if (stage === "capture") {
-    return (
-      <div ref={headingRef} tabIndex={-1} className="overflow-y-auto px-5 py-6 outline-none" data-lenis-prevent>
-        <LeadCaptureForm onSubmitted={submit} />
-      </div>
-    )
-  }
-
-  if (stage === "signup") {
-    return (
-      <div ref={headingRef} tabIndex={-1} className="overflow-y-auto px-5 py-6 outline-none" data-lenis-prevent>
-        <SignupScreen />
+      <div
+        ref={headingRef}
+        tabIndex={-1}
+        className="flex flex-1 flex-col items-center justify-center gap-4 px-5 py-10 text-center outline-none"
+      >
+        {failed ? (
+          <>
+            <p role="alert" className="text-sm font-semibold text-red-500">
+              We couldn&apos;t build your blueprint just then.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Your answers are saved. Try again, or close this and come back later.
+            </p>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Button
+                onClick={() => void submit()}
+                className="h-12 rounded-xl bg-indigo-600 px-6 text-sm font-semibold text-white hover:bg-indigo-700"
+              >
+                Try Again
+              </Button>
+              <Button
+                variant="outline"
+                onClick={close}
+                className="h-12 rounded-xl px-6 text-sm font-semibold"
+              >
+                Close
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <Loader2 className="h-8 w-8 animate-spin text-indigo-600 motion-reduce:animate-none dark:text-indigo-400" aria-hidden="true" />
+            <p aria-live="polite" className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+              Building Your Blueprint…
+            </p>
+            <p className="text-sm text-muted-foreground">This takes just a moment.</p>
+          </>
+        )}
       </div>
     )
   }
@@ -193,7 +188,7 @@ export const AssessmentFlow = () => {
         </p>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6" data-lenis-prevent>
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-6" data-lenis-prevent>
         <div ref={headingRef} tabIndex={-1} className="outline-none">
           {screen && (
             <QuestionScreen
@@ -212,7 +207,7 @@ export const AssessmentFlow = () => {
           onClick={back}
           className="h-12 rounded-xl px-4 text-sm font-semibold"
         >
-          <ArrowLeft className="mr-1.5 h-4 w-4" />
+          <ArrowLeft className="mr-1.5 h-4 w-4" aria-hidden="true" />
           Back
         </Button>
         <Button
@@ -220,7 +215,7 @@ export const AssessmentFlow = () => {
           className="h-12 flex-1 rounded-xl bg-indigo-600 text-sm font-semibold text-white hover:bg-indigo-700"
         >
           {isLast ? "Finish" : showSkip ? "Skip" : "Next"}
-          <ArrowRight className="ml-1.5 h-4 w-4" />
+          <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
         </Button>
       </div>
     </div>

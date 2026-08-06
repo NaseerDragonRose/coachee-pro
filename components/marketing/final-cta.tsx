@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { useAssessment } from "@/components/assessment/assessment-provider"
 
 export const FinalCta = () => {
-  const { open } = useAssessment()
+  const { openSignup } = useAssessment()
 
   return (
     <section className="px-6 py-12 sm:py-20">
@@ -45,7 +45,7 @@ export const FinalCta = () => {
             <Button
               size="lg"
               className="h-12 px-8 text-base font-semibold shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.02] bg-indigo-600 hover:bg-indigo-500 text-white"
-              onClick={open}
+              onClick={openSignup}
             >
               Start Free Assessment
               <ArrowRight className="ml-2 h-4 w-4" />

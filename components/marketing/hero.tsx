@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { useAssessment } from "@/components/assessment/assessment-provider"
 
 export const Hero = () => {
-  const { open } = useAssessment()
+  const { openSignup } = useAssessment()
 
   return (
     <section className="relative overflow-hidden py-12 sm:py-20">
@@ -41,7 +41,7 @@ export const Hero = () => {
             <Button
               size="lg"
               className="h-12 w-full px-8 text-base font-semibold shadow-md transition-all hover:scale-[1.02] bg-indigo-600 hover:bg-indigo-700 text-white sm:w-auto"
-              onClick={open}
+              onClick={openSignup}
             >
               Start free assessment
               <ArrowRight className="ml-2 h-4 w-4" />

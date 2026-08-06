@@ -3,21 +3,24 @@ import type { Answers, Question } from "./types.ts"
 const includes = (answers: Answers, id: string, optionId: string): boolean =>
   Array.isArray(answers[id]) && (answers[id] as string[]).includes(optionId)
 
+/**
+ * Recorded on every assessment so analytics can bucket by question-set
+ * generation instead of mixing incomparable cohorts. Bump it whenever a
+ * question is added, removed, or has its meaning changed — reworded prompts
+ * and relabelled options both count, since either changes what the answer
+ * meant. Becomes dynamic when the Phase 6 admin catalog lands.
+ */
+export const QUESTION_SET_VERSION = "2026-08-06"
+
 export const QUESTIONS: Question[] = [
   // ---------- Area 1: Identification ----------
-  {
-    id: "name",
-    area: "identification",
-    type: "text",
-    prompt: "First, what should we call you?",
-    placeholder: "Your first name",
-  },
+  // No name question: Google supplies it at sign-in, and the assessment only
+  // ever runs for a signed-in student now. `users.name` is authoritative.
   {
     id: "class",
     area: "identification",
     type: "choice",
-    prompt: "And which class are you in?",
-    groupWith: "name",
+    prompt: "Which class are you in?",
     options: [
       { id: "class_11", label: "Class 11" },
       { id: "class_12", label: "Class 12" },

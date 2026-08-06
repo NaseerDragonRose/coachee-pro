@@ -14,12 +14,12 @@ Built and styled: Home, About, Technology Careers, Contact, FAQ, Privacy, Terms 
 
 Running ahead of the phase plan, all functional but not production-wired:
 
-- **Career assessment** — 18 questions with conditional branching, opening as a modal from every marketing CTA. Client-side only, with draft save/resume in `localStorage`.
-- **Blueprint generation** — a mock AI service produces the full career-match data contract. Real AI generation is Phase 4.
-- **Google sign-in** — AWS Cognito via NextAuth, required immediately after the assessment completes. Sessions are JWT-only.
-- **Dashboard** — auth-gated, with a tabbed career switcher and a mock premium unlock.
+- **Google sign-in first** — AWS Cognito via NextAuth. Marketing CTAs open a sign-in dialog explaining why an account is needed; marketing pages are unauthenticated-only, so a signed-in visitor is redirected to their assessments. Sessions are JWT-only, and the account is created from the Google profile on sign-in. A dismissible prompt asks for a phone number and contact consent — optional, and nothing is blocked on it.
+- **Career assessment** — 18 questions with conditional branching, opening as a modal from `/assessments`. Every assessment belongs to a user from its first question and autosaves to PostgreSQL, so it resumes on any device. Its step never appears in the URL.
+- **Blueprint generation** — a mock AI service produces the full career-match data contract, generated server-side from the stored snapshot. Real AI generation is Phase 4.
+- **Blueprint view** — auth-gated, served from the database. `/assessments` lists an in-progress draft alongside completed results; `/assessments/[id]` shows one blueprint, with a tabbed career switcher and a mock premium unlock. Discarding a draft deletes it.
 
-**Not yet wired:** assessment submissions are logged, not delivered (SES pending). PostgreSQL runs locally with the schema migrated and a Prisma client ready, but no application code queries it yet and no RDS instance is provisioned. Razorpay is deliberately last, immediately before launch.
+**Not yet wired:** assessment submissions are stored but not emailed (SES pending). The database runs locally only — no RDS instance is provisioned. The premium unlock is still mocked in `localStorage`; Razorpay is deliberately last, immediately before launch.
 
 Roadmap and phase definitions: [`reference/PRODUCT.md`](reference/PRODUCT.md).
 

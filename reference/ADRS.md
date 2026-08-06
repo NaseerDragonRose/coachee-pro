@@ -125,7 +125,7 @@ This reverses the "Aurora is worth pricing out" lean written above, which assume
 
 **Note (2026-08-05):** ADR-001's Cognito integration deliberately avoided needing this — sessions are JWT-only with no Users table. It wasn't resolved by the auth work, just not forced by it.
 
-**Implemented (2026-08-06):** `prisma/schema.prisma` created with the subset of tables the product needs today (`users`, `assessments`, `blueprints`, `career_matches`), on Prisma 7, and migration `20260806091830_init` applied to a local **PostgreSQL 17** Docker container. The RDS instance must match that major version. No RDS instance is provisioned yet and no application code queries the database — the CDK stack is the next step. See `reference/DATABASE_DECISIONS.md` for the local setup and schema rationale.
+**Implemented (2026-08-06):** `prisma/schema.prisma` created with the subset of tables the product needs today (`users`, `assessments`, `blueprints`, `career_matches`), on Prisma 7, and migration `20260806091830_init` applied to a local **PostgreSQL 17** Docker container. The RDS instance must match that major version. The assessment flow reads and writes it through `services/assessment/` and `services/blueprint/`, exposed as server actions in `app/actions/`. No RDS instance is provisioned yet — the CDK stack is the next step. See `reference/DATABASE_DECISIONS.md` for the local setup and schema rationale.
 
 **Follow-on decision still open:** how developers reach dev/prod RDS. Prod should not be publicly accessible, so the choice is SSM Session Manager port forwarding (no bastion, no inbound ports) vs. an SSH bastion host. Decide when the CDK stack is written, since it shapes the networking.
 

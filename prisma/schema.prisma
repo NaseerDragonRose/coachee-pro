@@ -10,11 +10,18 @@ datasource db {
   provider = "postgresql"
 }
 
+enum AssessmentStatus {
+  DRAFT
+  COMPLETED
+}
+
 model User {
-  id        String   @id
-  email     String   @unique
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
+  id          String    @id
+  email       String    @unique
+  name        String
+  phone       String?
+  consentedAt DateTime? @map("consented_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
 
   assessments Assessment[]
   blueprints  Blueprint[]
@@ -23,20 +30,22 @@ model User {
 }
 
 model Assessment {
-  id          String   @id @default(uuid(7))
-  userId      String?  @map("user_id")
-  completedAt DateTime @default(now()) @map("completed_at")
+  id     String           @id @default(uuid(7))
+  userId String           @map("user_id")
+  status AssessmentStatus @default(DRAFT)
 
-  questionnaire      Json
-  lead               Json
-  questionSetVersion String @map("question_set_version")
-  leadEmail          String @map("lead_email")
+  answers            Json
+  currentScreenId    String? @map("current_screen_id")
+  questionnaire      Json?
+  questionSetVersion String  @map("question_set_version")
 
-  user       User?       @relation(fields: [userId], references: [id])
+  startedAt   DateTime  @default(now()) @map("started_at")
+  completedAt DateTime? @map("completed_at")
+
+  user       User        @relation(fields: [userId], references: [id])
   blueprints Blueprint[]
 
-  @@index([userId])
-  @@index([leadEmail])
+  @@index([userId, status])
   @@map("assessments")
 }
 

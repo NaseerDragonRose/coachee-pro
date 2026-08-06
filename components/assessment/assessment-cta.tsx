@@ -4,8 +4,11 @@ import type { ReactNode } from "react"
 
 import { useAssessment } from "./assessment-provider"
 
+// Used only from marketing pages and the footer, all of which are
+// unauthenticated — so the CTA opens the signup dialog, not the questionnaire.
+// Signed-in visitors never reach these pages; `proxy.ts` redirects them.
 export const AssessmentCta = ({ className, children, onActivate }: Props) => {
-  const { open } = useAssessment()
+  const { openSignup } = useAssessment()
 
   return (
     <button
@@ -13,7 +16,7 @@ export const AssessmentCta = ({ className, children, onActivate }: Props) => {
       className={className}
       onClick={() => {
         onActivate?.()
-        open()
+        openSignup()
       }}
     >
       {children}

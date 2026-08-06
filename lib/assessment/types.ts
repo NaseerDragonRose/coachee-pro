@@ -42,15 +42,3 @@ export type Question =
 /** One or more questions rendered together on a single screen. */
 export type Screen = Question[]
 
-export type Lead = {
-  name: string
-  email: string
-  phone: string
-  consent: true
-}
-
-export type AssessmentSubmission = {
-  answers: Answers
-  lead: Lead
-  completedAt: string
-}
