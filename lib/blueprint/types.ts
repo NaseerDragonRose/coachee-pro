@@ -20,6 +20,7 @@ export type ProfileSummary = {
 }
 
 export type LearningStage = {
+  timeframe: string
   title: string
   actions: string[]
   milestone?: string
@@ -52,7 +53,7 @@ export type CareerMatch = {
     year10: number
   }
   futureOutlook: string
-  commonMistakes: string[]
+  commonMistakes: { title: string; detail: string }[]
 }
 
 export type Blueprint = {

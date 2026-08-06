@@ -21,7 +21,7 @@ export type CareerCatalogEntry = {
   }
   salaryProgressionInrLakh: { entry: number; year3: number; year5: number; year10: number }
   futureOutlook: string
-  commonMistakes: string[]
+  commonMistakes: { title: string; detail: string }[]
   aiRisk: AiRisk
 }
 
@@ -46,6 +46,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     ],
     learningPath: {
       months1to3: {
+        timeframe: "Months 1–3",
         title: "Learn to code",
         actions: [
           "Pick one language (Python or JavaScript) and finish a beginner course",
@@ -54,6 +55,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months4to6: {
+        timeframe: "Months 4–6",
         title: "Build real projects",
         actions: [
           "Build 2-3 small full-stack projects",
@@ -62,6 +64,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months7to12: {
+        timeframe: "Months 7–12",
         title: "Get real-world exposure",
         actions: [
           "Apply for a beginner internship or open-source contribution",
@@ -81,9 +84,21 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     futureOutlook:
       "Software engineering remains in strong demand as every industry keeps building digital products. AI tools are changing how code gets written, but engineers who can design systems and solve real problems stay valuable — routine, boilerplate coding is what's most exposed.",
     commonMistakes: [
-      "Chasing a big-name college instead of building a strong project portfolio",
-      "Learning too many languages shallowly instead of one deeply",
-      "Waiting until final year to start applying for internships",
+      {
+        title: "Chasing college brand over portfolio",
+        detail:
+          "Companies hire mostly on your projects and problem-solving ability — a well-documented GitHub with 2-3 solid builds beats a prestigious college name with nothing to show for it.",
+      },
+      {
+        title: "Spreading thin across languages",
+        detail:
+          "Jumping between Python, Java, and JavaScript before mastering any one of them leaves you unable to build anything real — depth in one language gets you hired faster than surface familiarity with five.",
+      },
+      {
+        title: "Leaving internships to the last year",
+        detail:
+          "Recruiters look for early signs of initiative — starting to apply in year one or two, even for small roles, builds the experience and references that make final-year applications land.",
+      },
     ],
     aiRisk: "medium",
   },
@@ -106,6 +121,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     ],
     learningPath: {
       months1to3: {
+        timeframe: "Months 1–3",
         title: "Build maths & Python foundations",
         actions: [
           "Strengthen statistics and linear algebra basics",
@@ -114,6 +130,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months4to6: {
+        timeframe: "Months 4–6",
         title: "Build ML projects",
         actions: [
           "Build 2 small ML projects (classification, prediction)",
@@ -122,6 +139,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months7to12: {
+        timeframe: "Months 7–12",
         title: "Go deeper and get exposure",
         actions: [
           "Learn one deep learning framework (PyTorch)",
@@ -141,9 +159,21 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     futureOutlook:
       "AI engineering is one of the fastest-growing tech fields as companies race to add AI features. Demand is strong globally including remote roles, though the field evolves quickly — engineers need to keep learning as tools change every year.",
     commonMistakes: [
-      "Jumping into deep learning before basic maths and Python are solid",
-      "Only doing tutorials without building original projects",
-      "Ignoring the data-handling and engineering skills that most AI jobs actually need day to day",
+      {
+        title: "Skipping the maths and Python basics",
+        detail:
+          "Deep learning tutorials make sense only once statistics, linear algebra, and Python are second nature — without that base you'll copy code you don't understand and stall the first time something breaks.",
+      },
+      {
+        title: "Tutorial-only learning",
+        detail:
+          "Following along with courses feels like progress, but interviewers and recruiters look for projects you designed and debugged yourself — tutorials alone don't prove you can solve a new problem.",
+      },
+      {
+        title: "Underrating data-handling skills",
+        detail:
+          "Most real AI jobs spend more time cleaning and preparing data than tuning models — skipping pandas, SQL, and data pipelines leaves a gap that shows up fast on the job.",
+      },
     ],
     aiRisk: "low",
   },
@@ -167,6 +197,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     ],
     learningPath: {
       months1to3: {
+        timeframe: "Months 1–3",
         title: "Learn the fundamentals",
         actions: [
           "Learn networking basics (how the internet actually works)",
@@ -175,6 +206,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months4to6: {
+        timeframe: "Months 4–6",
         title: "Get hands-on",
         actions: [
           "Practice on beginner-friendly platforms (capture-the-flag style labs)",
@@ -183,6 +215,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months7to12: {
+        timeframe: "Months 7–12",
         title: "Build credibility",
         actions: [
           "Attempt an entry-level certification track",
@@ -202,9 +235,21 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     futureOutlook:
       "Cybersecurity demand keeps growing as more of daily life moves online and attacks increase. It's a field with strong job security and low automation risk — defending systems still needs human judgement.",
     commonMistakes: [
-      "Trying to learn every security tool at once instead of the fundamentals first",
-      "Skipping networking and OS basics to jump straight to 'hacking'",
-      "Not practicing hands-on labs, only reading theory",
+      {
+        title: "Tool-hopping before the fundamentals",
+        detail:
+          "Jumping between every scanner and framework without understanding networking and OS basics first means none of the tools actually make sense — fundamentals first makes every tool easier to learn later.",
+      },
+      {
+        title: "Skipping straight to 'hacking'",
+        detail:
+          "Offensive security techniques only make sense once you understand how networks and operating systems actually work — without that foundation, you're memorizing commands instead of understanding attacks.",
+      },
+      {
+        title: "Theory without hands-on labs",
+        detail:
+          "Reading about attacks and defenses builds vocabulary, not skill — recruiters and certifications alike expect real lab time, not just familiarity with the concepts.",
+      },
     ],
     aiRisk: "low",
   },
@@ -228,6 +273,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     ],
     learningPath: {
       months1to3: {
+        timeframe: "Months 1–3",
         title: "Build core fundamentals",
         actions: [
           "Learn Linux command line and basic networking",
@@ -236,6 +282,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months4to6: {
+        timeframe: "Months 4–6",
         title: "Go hands-on with cloud",
         actions: [
           "Deploy a small project on the cloud end-to-end",
@@ -244,6 +291,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months7to12: {
+        timeframe: "Months 7–12",
         title: "Get certified and get exposure",
         actions: [
           "Prepare for an entry-level cloud certification",
@@ -263,9 +311,21 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     futureOutlook:
       "Cloud infrastructure demand keeps rising as more companies move off physical servers. It's a stable, high-demand field with strong remote-work availability and relatively low automation risk since it requires judgement about live systems.",
     commonMistakes: [
-      "Trying to learn all three major cloud providers at once instead of going deep on one",
-      "Only doing certifications without hands-on deployment practice",
-      "Ignoring scripting/automation skills that separate juniors from seniors",
+      {
+        title: "Spreading across all three cloud providers",
+        detail:
+          "AWS, Azure, and GCP each have their own ecosystem of services — splitting attention across all three early on means shallow knowledge everywhere instead of real depth in one that gets you hired.",
+      },
+      {
+        title: "Certifications without real deployments",
+        detail:
+          "A certification proves you can pass an exam, not that you can deploy and maintain a real system — pairing every cert with a hands-on project is what actually builds job-ready skill.",
+      },
+      {
+        title: "Skipping automation and scripting",
+        detail:
+          "Manually clicking through cloud consoles is what juniors do — the engineers who move up are the ones who script and automate repetitive infrastructure work early.",
+      },
     ],
     aiRisk: "medium",
   },
@@ -288,6 +348,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     ],
     learningPath: {
       months1to3: {
+        timeframe: "Months 1–3",
         title: "Build statistics & Python base",
         actions: [
           "Learn core statistics concepts (mean, distributions, hypothesis testing)",
@@ -296,6 +357,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months4to6: {
+        timeframe: "Months 4–6",
         title: "Analyze real data",
         actions: [
           "Work through 2-3 public datasets end-to-end",
@@ -304,6 +366,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months7to12: {
+        timeframe: "Months 7–12",
         title: "Build a portfolio",
         actions: [
           "Complete an end-to-end data project with a written report",
@@ -324,9 +387,21 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     futureOutlook:
       "Data-driven decision making keeps growing across every industry, keeping demand for data scientists strong. AI tools are automating some routine analysis, so the value is shifting toward people who can ask the right questions and interpret results, not just run models.",
     commonMistakes: [
-      "Jumping to machine learning before statistics fundamentals are solid",
-      "Only doing modelling exercises without learning to communicate findings clearly",
-      "Underestimating how much of the job is cleaning messy data",
+      {
+        title: "Rushing to ML before statistics",
+        detail:
+          "Machine learning models are built on statistical reasoning — without a solid grounding in distributions, hypothesis testing, and probability, you'll misread your own results without realizing it.",
+      },
+      {
+        title: "Modelling without communication skills",
+        detail:
+          "A model nobody can act on is wasted work — the data scientists who stand out can explain what the numbers mean and why it matters to someone non-technical.",
+      },
+      {
+        title: "Underestimating data cleaning",
+        detail:
+          "Real-world datasets are messy, inconsistent, and full of gaps — the majority of a data scientist's actual time goes into cleaning and preparing data, not building models.",
+      },
     ],
     aiRisk: "medium",
   },
@@ -350,6 +425,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     ],
     learningPath: {
       months1to3: {
+        timeframe: "Months 1–3",
         title: "Learn design fundamentals",
         actions: [
           "Learn core design principles (layout, color, typography)",
@@ -358,6 +434,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months4to6: {
+        timeframe: "Months 4–6",
         title: "Practice real projects",
         actions: [
           "Redesign 2-3 existing apps as practice projects",
@@ -366,6 +443,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months7to12: {
+        timeframe: "Months 7–12",
         title: "Build credibility",
         actions: [
           "Complete one full case study from research to final design",
@@ -386,9 +464,21 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     futureOutlook:
       "Good product design stays in demand as companies compete on user experience. AI tools now speed up producing design variations, so the value is shifting toward designers who deeply understand user problems, not just visual execution.",
     commonMistakes: [
-      "Focusing only on visuals without learning user research",
-      "Building a portfolio of redesigns instead of solving real problems",
-      "Ignoring how the designs will actually be built by developers",
+      {
+        title: "Visuals without user research",
+        detail:
+          "Pretty screens that don't solve a real user problem don't get hired — design portfolios that show research, reasoning, and iteration stand out far more than polish alone.",
+      },
+      {
+        title: "Portfolio full of redesigns",
+        detail:
+          "Redesigning existing famous apps is a common beginner exercise, but it doesn't show you can solve an original problem — case studies built around real, self-identified problems carry more weight.",
+      },
+      {
+        title: "Designing without developer context",
+        detail:
+          "Interfaces that look great but ignore technical constraints create friction with engineering teams — understanding how your designs actually get built makes you far easier to work with.",
+      },
     ],
     aiRisk: "medium",
   },
@@ -412,6 +502,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     ],
     learningPath: {
       months1to3: {
+        timeframe: "Months 1–3",
         title: "Understand the basics",
         actions: [
           "Learn what product managers actually do (read PM case studies)",
@@ -420,6 +511,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months4to6: {
+        timeframe: "Months 4–6",
         title: "Get hands-on experience",
         actions: [
           "Run a mini product project (even for a college club or personal idea)",
@@ -428,6 +520,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months7to12: {
+        timeframe: "Months 7–12",
         title: "Build real exposure",
         actions: [
           "Take part in a product case competition or hackathon",
@@ -448,9 +541,21 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     futureOutlook:
       "Companies keep needing people who can turn business goals into things engineers can build, so demand stays healthy — though it's typically not an entry-level-heavy field; most people move into it after some experience in engineering, design, or business.",
     commonMistakes: [
-      "Trying to become a PM straight after school without any hands-on project or team experience",
-      "Focusing only on 'ideas' without learning to work with data or engineering constraints",
-      "Underestimating how much of the job is communication and alignment, not decision-making alone",
+      {
+        title: "Aiming for PM with no hands-on experience",
+        detail:
+          "Product management is rarely an entry-level hire — building real project or team experience first, even informally, gives you the credibility and instincts the role actually needs.",
+      },
+      {
+        title: "Ideas without data or engineering grounding",
+        detail:
+          "Good product decisions are backed by data and shaped by what's actually feasible to build — PMs who only pitch ideas without that grounding struggle to gain trust from their teams.",
+      },
+      {
+        title: "Underrating communication and alignment",
+        detail:
+          "Most of a PM's real work is keeping designers, engineers, and stakeholders aligned — treating the job as pure decision-making misses where the actual effort goes.",
+      },
     ],
     aiRisk: "low",
   },
@@ -474,6 +579,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     ],
     learningPath: {
       months1to3: {
+        timeframe: "Months 1–3",
         title: "Build core fundamentals",
         actions: [
           "Learn Linux command line thoroughly",
@@ -482,6 +588,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months4to6: {
+        timeframe: "Months 4–6",
         title: "Get hands-on",
         actions: [
           "Set up a CI/CD pipeline for a personal project",
@@ -490,6 +597,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months7to12: {
+        timeframe: "Months 7–12",
         title: "Build real exposure",
         actions: [
           "Automate a full deployment pipeline end-to-end",
@@ -509,9 +617,21 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     futureOutlook:
       "As more companies ship software constantly, demand for people who keep that process reliable keeps growing. It's a hands-on, systems-heavy role that's harder to automate away since it involves judgement calls under pressure.",
     commonMistakes: [
-      "Learning tools in isolation without understanding the full deployment pipeline",
-      "Skipping Linux/networking fundamentals to jump straight to trendy tools",
-      "Not practicing what happens when something breaks, only how to set things up",
+      {
+        title: "Learning tools without the full pipeline",
+        detail:
+          "Knowing Docker or a CI/CD tool in isolation isn't enough — DevOps is about understanding how code moves from a developer's laptop to production, end to end.",
+      },
+      {
+        title: "Skipping Linux and networking basics",
+        detail:
+          "Trendy tools change every year, but Linux and networking fundamentals are what make any of them make sense — skipping straight to the tools leaves shaky foundations underneath.",
+      },
+      {
+        title: "Only practicing setup, not failure",
+        detail:
+          "Anyone can follow a tutorial to set something up — the real skill DevOps engineers are paid for is staying calm and effective when something breaks in production.",
+      },
     ],
     aiRisk: "medium",
   },
@@ -534,6 +654,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     ],
     learningPath: {
       months1to3: {
+        timeframe: "Months 1–3",
         title: "Build core fundamentals",
         actions: [
           "Learn basic electronics and circuits",
@@ -542,6 +663,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months4to6: {
+        timeframe: "Months 4–6",
         title: "Build real projects",
         actions: [
           "Build 1-2 small robotics projects (line follower, simple arm)",
@@ -550,6 +672,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months7to12: {
+        timeframe: "Months 7–12",
         title: "Go deeper",
         actions: [
           "Take part in a robotics competition or hackathon",
@@ -569,9 +692,21 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     futureOutlook:
       "Robotics and automation are growing fields as manufacturing, logistics, and consumer robotics expand. It requires combining hardware and software skills, which keeps it relatively resistant to being automated away by software alone.",
     commonMistakes: [
-      "Focusing only on theory without building physical projects",
-      "Choosing an expensive college purely for its name instead of lab access and project culture",
-      "Not developing programming skills alongside the mechanical/electronics side",
+      {
+        title: "Theory without physical projects",
+        detail:
+          "Robotics is a hands-on discipline — understanding the physics on paper doesn't translate to being able to wire, build, and debug a real physical system under real-world constraints.",
+      },
+      {
+        title: "Choosing college brand over lab access",
+        detail:
+          "A robotics program's value comes from its labs, equipment, and project culture — an expensive name-brand college without real hands-on access is a worse choice than a cheaper one with strong labs.",
+      },
+      {
+        title: "Neglecting programming skills",
+        detail:
+          "Modern robotics is as much software as hardware — focusing only on the mechanical and electronics side while neglecting programming leaves half the skill set missing.",
+      },
     ],
     aiRisk: "low",
   },
@@ -594,6 +729,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     ],
     learningPath: {
       months1to3: {
+        timeframe: "Months 1–3",
         title: "Learn the fundamentals",
         actions: [
           "Learn C# programming basics",
@@ -602,6 +738,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months4to6: {
+        timeframe: "Months 4–6",
         title: "Build small games",
         actions: [
           "Build 2-3 small complete games (even simple ones)",
@@ -610,6 +747,7 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
         ],
       },
       months7to12: {
+        timeframe: "Months 7–12",
         title: "Build a portfolio",
         actions: [
           "Build one polished, complete game as a portfolio centerpiece",
@@ -630,9 +768,21 @@ export const CAREER_CATALOG: CareerCatalogEntry[] = [
     futureOutlook:
       "Game development demand is steady, driven by mobile and indie gaming growth, though the industry is competitive and can have less job stability than other tech fields (project-based hiring, studio layoffs are common).",
     commonMistakes: [
-      "Spending years on one ambitious game instead of finishing several small ones",
-      "Learning game engines without learning the underlying programming fundamentals",
-      "Underestimating how competitive and unstable studio hiring can be",
+      {
+        title: "One ambitious game instead of finishing small ones",
+        detail:
+          "Unfinished ambitious projects don't build a portfolio — shipping several small, complete games teaches far more about the full development cycle than years on one game that never ships.",
+      },
+      {
+        title: "Engine skills without programming fundamentals",
+        detail:
+          "Drag-and-drop familiarity with Unity or Unreal only goes so far — the developers who can actually solve problems understand the programming fundamentals underneath the engine.",
+      },
+      {
+        title: "Underestimating how unstable studio hiring is",
+        detail:
+          "Game studio hiring is project-based and layoffs are common — going in with a realistic picture of the industry's instability helps you plan a more resilient path, like freelance or indie work alongside studio applications.",
+      },
     ],
     aiRisk: "medium",
   },
